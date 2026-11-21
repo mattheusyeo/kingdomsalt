@@ -7,6 +7,7 @@ A static website (HTML, CSS, a little JavaScript) with a Stripe Checkout shop.
 | Home | `index.html` |
 | Gallery (Lifestyle / Stationery / Accessories tabs) | `gallery.html` |
 | Product page (opens from the Gallery) | `product.html` |
+| Contact (opens from the footer box and the Contact tab) | `contact.html` |
 | Cart | `cart.html` |
 | Thank-you page after paying | `success.html` |
 
@@ -79,7 +80,7 @@ To place AliExpress orders automatically you need an approved app on the **AliEx
 ## Project layout
 
 ```
-index.html, gallery.html, cart.html, success.html   pages
+index.html, gallery.html, product.html, contact.html, cart.html, success.html   pages
 css/styles.css                                      all styling
 js/menu.js                                          menu dropdown + page fade
 js/gallery.js                                       fills the Gallery page from products.json
