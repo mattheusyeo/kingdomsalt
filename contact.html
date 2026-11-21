@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact – Kingdomheart</title>
+  <title>Contact – Kingdom Salt</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caprasimo&family=Cinzel:wght@500&family=Outfit:wght@400;500;700&display=swap">
@@ -12,7 +12,7 @@
 <body>
   <header class="nav" id="nav">
     <div class="nav-bar">
-      <a href="index.html" class="logo">Kingdomheart</a>
+      <a href="index.html" class="logo">Kingdom Salt</a>
       <a href="cart.html" class="cart-link" aria-label="Cart, empty">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6L5 8Z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg>
         <span class="cart-count" hidden>0</span>
@@ -43,27 +43,31 @@
         <div class="contact-box" id="contact-box">
           <div class="contact-item">
             <p class="contact-label">Email</p>
-            <a class="contact-value" href="mailto:kingdomsalt@gmail.com">kingdomsalt@gmail.com</a>
+            <button class="contact-value" type="button" data-copy="kingdomsalt@gmail.com" aria-label="Copy email address kingdomsalt@gmail.com">
+              <span class="copy-text">kingdomsalt@gmail.com</span>
+            </button>
           </div>
           <div class="contact-item">
             <p class="contact-label">Phone</p>
-            <a class="contact-value" href="tel:+61491028212">0491 028 212</a>
+            <button class="contact-value" type="button" data-copy="0491028212" aria-label="Copy phone number 0491 028 212">
+              <span class="copy-text">0491 028 212</span>
+            </button>
           </div>
+          <p class="copy-hint" id="copy-hint" role="status" aria-live="polite">Click the email or phone number to copy it.</p>
         </div>
 
         <div class="contact-actions">
-          <a class="button" href="mailto:kingdomsalt@gmail.com"><img src="assets/dot.svg" alt="" width="4" height="4">Email us</a>
-          <a class="button" href="tel:+61491028212"><img src="assets/dot.svg" alt="" width="4" height="4">Call us</a>
+          <a class="button" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=kingdomsalt@gmail.com" target="_blank" rel="noopener noreferrer"><img src="assets/dot.svg" alt="" width="4" height="4">Email us</a>
         </div>
       </div>
     </section>
   </main>
 
   <footer class="footer">
-    <a class="footer-card" href="contact.html" aria-label="Contact Kingdomheart">
+    <a class="footer-card" href="contact.html" aria-label="Contact Kingdom Salt">
       <img class="footer-img" src="assets/footer-mountain.jpg" alt="Sunlit mountain above a valley with low clouds" loading="lazy" decoding="async">
       <span class="footer-inner">
-        <span class="monogram">KH.</span>
+        <span class="monogram">KS.</span>
         <span class="footer-row">
           <span>Miami, FL</span>
           <span class="footer-contact">Contact</span>
@@ -73,6 +77,7 @@
   </footer>
 
   <script src="js/cart.js"></script>
+  <script src="js/contact.js"></script>
   <script src="js/menu.js"></script>
 </body>
 </html>

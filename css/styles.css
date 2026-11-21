@@ -780,6 +780,13 @@ a.g-add { text-decoration: none; }
   color: var(--headline);
 }
 .contact-value:hover { text-decoration: underline; text-underline-offset: 5px; }
+button.contact-value {
+  padding: 0; background: none; border: 0;
+  font-family: inherit; text-align: left; cursor: copy;
+}
+button.contact-value:focus-visible { outline: 2px solid var(--headline); outline-offset: 4px; border-radius: 4px; }
+button.contact-value.is-copied { text-decoration: none; }
+.copy-hint { grid-column: 1 / -1; font-size: 14px; line-height: 1.4; color: var(--caption); }
 .contact-actions { display: flex; flex-wrap: wrap; gap: 14px; }
 
 @media (max-width: 1100px) {
