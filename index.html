@@ -47,57 +47,9 @@
   </header>
 
   <main>
-    <section class="intro" id="about">
-      <div class="intro-content">
-        <h2 class="eyebrow">Who We Are</h2>
-        <p class="intro-title">We're Kingdomsalt and we're here to help you find your floral story.</p>
-      </div>
-      <a class="button" href="#about"><img src="assets/dot.svg" alt="" width="4" height="4">About us</a>
-    </section>
-
-    <section class="carousel" id="gallery" aria-label="Gallery">
-      <img src="assets/carousel-1.jpg" alt="Pink roses - image 1 out of 5">
-      <img src="assets/carousel-2.jpg" alt="White rose - image 2 out of 5">
-      <img src="assets/carousel-3.jpg" alt="Pink roses - image 3 out of 5">
-      <img src="assets/carousel-4.jpg" alt="White tulips - image 4 out of 5">
-      <img src="assets/carousel-5.jpg" alt="Orchid - image 5 out of 5">
-    </section>
-
-    <div class="title" id="accessories">
-      <h2>What We Do</h2>
-      <p>We bring a touch of that simple magic into your world.</p>
-      <img class="divider" src="assets/divider-1.svg" alt="" role="presentation">
+    <div class="shelves" id="shelves" aria-live="polite">
+      <!-- js/shelves.js fills in one row per category from data/products.json -->
     </div>
-
-    <ol class="services">
-      <li>
-        <p class="number">1</p>
-        <img class="service-img" src="assets/service-1.jpg" alt="Person with Bouquette of flowers">
-        <div class="service-text">
-          <h3>Floral Installations</h3>
-          <p>Living art for homes, businesses, and events.</p>
-        </div>
-        <img class="divider" src="assets/divider-2.svg" alt="" role="presentation">
-      </li>
-      <li>
-        <p class="number">2</p>
-        <img class="service-img service-img-sm" src="assets/service-2.jpg" alt="Person making a Bouquette of flowers">
-        <div class="service-text">
-          <h3>Native Plant Arrangements</h3>
-          <p>Whether it’s a private retreat or a public space, we craft floral experiences that bloom beyond expectations.</p>
-        </div>
-        <img class="divider" src="assets/divider-2.svg" alt="" role="presentation">
-      </li>
-      <li>
-        <p class="number">3</p>
-        <span class="service-img service-img-tint"><img src="assets/service-3.jpg" alt="Pink tulips"></span>
-        <div class="service-text">
-          <h3>Custom Floral Concepts</h3>
-          <p>Your vision, our blooms. We build arrangements that are both personal and exquisitely simple. Whether it’s a private retreat or a public space, we craft floral experiences that bloom beyond expectations.</p>
-        </div>
-        <img class="divider" src="assets/divider-2.svg" alt="" role="presentation">
-      </li>
-    </ol>
 
     <div class="feature">
       <img src="assets/feature.jpg" alt="Purple flowers">
@@ -127,6 +79,7 @@
   <script src="js/catalog.js"></script>
   <script src="js/cart.js"></script>
   <script src="js/hero.js"></script>
+  <script src="js/shelves.js"></script>
   <script src="js/menu.js"></script>
 </body>
 </html>
