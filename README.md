@@ -1,4 +1,4 @@
-# Kingdom Salt
+# Kingdomsalt
 
 A static website (HTML, CSS, a little JavaScript) with a Stripe Checkout shop.
 

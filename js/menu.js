@@ -23,7 +23,7 @@
     var category = new URLSearchParams(window.location.search).get('category');
     if (names[category]) {
       title.textContent = names[category];
-      document.title = names[category] + ' – Kingdom Salt';
+      document.title = names[category] + ' – Kingdomsalt';
       nav.querySelectorAll('.nav-items a').forEach(function (a) {
         if (a.getAttribute('href').indexOf('category=' + category) !== -1) a.classList.add('active');
       });
@@ -41,7 +41,11 @@
     var samePage = a.pathname === window.location.pathname && a.search === window.location.search;
     if (samePage && a.hash) return;                                  // jump within this page
     e.preventDefault();
-    if (samePage) { setOpen(false); return; }                        // already here
+    if (samePage) {                                                  // already here: close the menu and go to the top
+      setOpen(false);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
     document.documentElement.classList.add('is-leaving');
     setTimeout(function () { window.location.href = a.href; }, LEAVE_MS);
   });
