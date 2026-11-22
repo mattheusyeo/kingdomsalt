@@ -306,18 +306,18 @@ test('home page banner: every banner photo exists and the order is candle, flora
   }
 });
 
-test('the steamed bun keychain is in accessories at $9.95 with six colours', () => {
+test('the steamed bun keychain is in accessories at $12 with six colours', () => {
   const p = catalog.products.find((x) => x.id === 'steamed-bun-keychain');
-  assert.equal(p.price, 995);
+  assert.equal(p.price, 1200);
   assert.deepEqual(p.categories, ['accessories']);
   assert.deepEqual(p.options.values.map((v) => v.id), ['yellow', 'pink', 'white', 'purple', 'green', 'teal']);
-  assert.equal(priceCart(catalog, [{ id: p.id, option: 'pink', qty: 1 }]).lines[0].unitAmount, 995);
+  assert.equal(priceCart(catalog, [{ id: p.id, option: 'pink', qty: 1 }]).lines[0].unitAmount, 1200);
   assert.ok(priceCart(catalog, [{ id: p.id, qty: 1 }]).error, 'a colour must be chosen');
 });
 
-test('the charm keychain is in accessories at $12.95 with three styles and its AliExpress id', () => {
+test('the charm keychain is in accessories at $13.95 with three styles and its AliExpress id', () => {
   const p = catalog.products.find((x) => x.id === 'charm-keychain');
-  assert.equal(p.price, 1295);
+  assert.equal(p.price, 1395);
   assert.deepEqual(p.categories, ['accessories']);
   assert.deepEqual(p.options.values.map((v) => v.id), ['cream', 'pink', 'purple']);
   assert.equal(p.aliexpress.productId, '1005009306343409');
