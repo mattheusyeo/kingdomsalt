@@ -59,30 +59,68 @@
       backLink.textContent = '← ' + CATEGORY[cat];
     }
 
-    /* ----- photo collage ----- */
+    /* ----- photos: one big photo, or a scrolling carousel when there are several ----- */
     var photos = (product.images && product.images.length)
       ? product.images
       : [{ src: product.image, alt: product.alt || product.name }];
+    photos = photos.slice(0, 12);
     var openPhoto = makeLightbox();
     var current = { src: photos[0].src, alt: photos[0].alt || product.name };
-    var mainTile = null, mainImg = null;
-    var collage = el('div', 'collage ' + (photos.length >= 5 ? 'collage-5' : 'collage-stack'));
-    collage.style.setProperty('--n', String(Math.max(1, photos.length - 1)));
-    photos.slice(0, 5).forEach(function (ph, i) {
+    var mainImg = null;
+    var multi = photos.length > 1;
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var collage = el('div', 'collage' + (multi ? ' is-carousel' : ''));
+    var track = el('div', 'collage-track');
+    if (multi) { track.tabIndex = 0; track.setAttribute('role', 'group'); track.setAttribute('aria-roledescription', 'carousel'); track.setAttribute('aria-label', product.name + ' photos'); }
+    photos.forEach(function (ph, i) {
       var tile = el('button', 'collage-item');
       tile.type = 'button';
-      tile.setAttribute('aria-label', 'Enlarge photo ' + (i + 1) + ' of ' + Math.min(photos.length, 5));
+      tile.setAttribute('aria-label', 'Enlarge photo ' + (i + 1) + ' of ' + photos.length);
       var img = el('img');
       img.src = ph.src; img.alt = ph.alt || product.name;
       img.decoding = 'async';
-      window.khFadeIn(img);
+      if (i === 0) window.khFadeIn(img);
       tile.appendChild(img);
-      if (i === 0) { mainTile = tile; mainImg = img; }
+      if (i === 0) mainImg = img;
       tile.addEventListener('click', function () {
         if (i === 0) openPhoto(current.src, current.alt); else openPhoto(ph.src, ph.alt || product.name);
       });
-      collage.appendChild(tile);
+      track.appendChild(tile);
     });
+    collage.appendChild(track);
+
+    var goTo = function () {};
+    if (multi) {
+      var arrowSvg = function (d) { return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' + d + '"/></svg>'; };
+      var prevB = el('button', 'collage-arrow collage-prev'); prevB.type = 'button'; prevB.setAttribute('aria-label', 'Previous photo'); prevB.innerHTML = arrowSvg('M15 5l-7 7 7 7');
+      var nextB = el('button', 'collage-arrow collage-next'); nextB.type = 'button'; nextB.setAttribute('aria-label', 'Next photo'); nextB.innerHTML = arrowSvg('M9 5l7 7-7 7');
+      var count = el('span', 'collage-count'); count.setAttribute('aria-hidden', 'true');
+      var dots = el('div', 'collage-dots');
+      var dotEls = photos.map(function (ph, i) {
+        var d = el('button', 'collage-dot'); d.type = 'button'; d.setAttribute('aria-label', 'Show photo ' + (i + 1));
+        d.addEventListener('click', function () { goTo(i); });
+        dots.appendChild(d); return d;
+      });
+      goTo = function (i) {
+        i = Math.max(0, Math.min(photos.length - 1, i));
+        track.scrollTo({ left: i * track.clientWidth, behavior: reduceMotion ? 'auto' : 'smooth' });
+      };
+      var sync = function () {
+        var i = Math.round(track.scrollLeft / Math.max(1, track.clientWidth));
+        dotEls.forEach(function (d, k) { d.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+        count.textContent = (i + 1) + ' / ' + photos.length;
+        prevB.disabled = i <= 0; nextB.disabled = i >= photos.length - 1;
+      };
+      prevB.addEventListener('click', function () { goTo(Math.round(track.scrollLeft / track.clientWidth) - 1); });
+      nextB.addEventListener('click', function () { goTo(Math.round(track.scrollLeft / track.clientWidth) + 1); });
+      track.addEventListener('scroll', function () { window.requestAnimationFrame(sync); }, { passive: true });
+      track.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowRight') { e.preventDefault(); nextB.click(); } else if (e.key === 'ArrowLeft') { e.preventDefault(); prevB.click(); }
+      });
+      window.addEventListener('resize', function () { goTo(Math.round(track.scrollLeft / Math.max(1, track.clientWidth))); });
+      collage.appendChild(prevB); collage.appendChild(nextB); collage.appendChild(count); collage.appendChild(dots);
+      sync();
+    }
 
     /* ----- product information ----- */
     var info = el('div', 'product-info');
@@ -142,6 +180,7 @@
             mainImg.alt = v.alt || (product.name + ' \u2013 ' + v.name);
             current = { src: mainImg.src, alt: mainImg.alt };
             window.khFadeIn(mainImg);
+            goTo(0);                                       // show the chosen option's photo
           }
           add.setAttribute('data-option', v.id);
           add.disabled = false;
