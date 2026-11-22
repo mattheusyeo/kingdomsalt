@@ -7,9 +7,7 @@
   --light: #f7f7f7;
   --cream: #f5eee0;
   --radius: 30px;
-  --page-top: #ecdccb;      /* clay: menu band, fades into the page colour below the header line */
-  --page-body: #faf6ee;     /* ivory */
-  --nav-h: 82px;
+  --page: #ecdccb;          /* clay: the page and menu background */
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -17,7 +15,7 @@ html { scroll-behavior: smooth; scroll-padding-top: 90px; }
 
 body {
   font-family: "Outfit", "Helvetica Neue", Arial, sans-serif;
-  background: linear-gradient(to bottom, var(--page-top) 0, var(--page-top) var(--nav-h), var(--page-body) calc(var(--nav-h) + 320px)) no-repeat, var(--page-body);
+  background: var(--page);
   color: var(--body);
   padding: 0 40px;
   -webkit-font-smoothing: antialiased;
@@ -36,7 +34,7 @@ ol { list-style: none; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: var(--page-top);
+  background: var(--page);
   border-bottom: 1px solid var(--divider);
   text-transform: uppercase;
   font-weight: 700;
@@ -298,7 +296,7 @@ ol { list-style: none; }
     flex-direction: column;
     gap: 0;
     padding: 0;
-    background: var(--page-top);
+    background: var(--page);
     border-bottom: 1px solid var(--divider);
     font-size: 14px;
     letter-spacing: 0.02em;
@@ -338,7 +336,6 @@ ol { list-style: none; }
 @media (max-width: 600px) {
   body { padding: 0 16px; }
   html { scroll-padding-top: 80px; }
-  :root { --nav-h: 64px; }
   .nav { left: 16px; right: 16px; }
   .nav-bar { height: 64px; }
   .logo { font-size: 22px; letter-spacing: 0.08em; }
