@@ -99,8 +99,7 @@
     var add = el('button', 'button button-lg product-add');
     add.type = 'button';
     add.setAttribute('data-add-to-cart', product.id);
-    var dot = el('img'); dot.src = 'assets/dot.svg'; dot.alt = ''; dot.width = 4; dot.height = 4;
-    add.appendChild(dot);
+    add.appendChild(window.khAddIcon());
     add.appendChild(document.createTextNode('Add to cart'));
 
     if (values.length) {

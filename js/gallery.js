@@ -75,7 +75,7 @@
           add = el('button', 'button g-add');
           add.type = 'button';
           add.setAttribute('data-add-to-cart', p.id);
-          add.appendChild(dot);
+          add.appendChild(window.khAddIcon());
           add.appendChild(document.createTextNode('Add to cart'));
         }
         li.appendChild(add);

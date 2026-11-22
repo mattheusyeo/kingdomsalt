@@ -43,11 +43,28 @@
   }
   function makeKey(id, option) { return option ? id + '|' + option : id; }
 
+  // plus sign that turns into a check mark when the item has been added (see .add-icon in styles.css)
+  window.khAddIcon = function () {
+    var span = document.createElement('span');
+    span.className = 'add-icon';
+    span.setAttribute('aria-hidden', 'true');
+    span.innerHTML =
+      '<svg class="add-plus" viewBox="0 0 12 12" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 1.5v9M1.5 6h9"/></svg>' +
+      '<svg class="add-check" viewBox="0 0 12 12" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6.5l2.6 2.6L10 3.2"/></svg>';
+    return span;
+  };
+
+  var lastCount = null;
   function updateBadge() {
     var n = count();
+    var grew = lastCount !== null && n > lastCount;
+    lastCount = n;
     document.querySelectorAll('.cart-count').forEach(function (el) {
       el.textContent = n;
       el.hidden = n === 0;
+      if (grew) {                                   // little bounce when something is added
+        el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump');
+      }
     });
     document.querySelectorAll('.cart-link').forEach(function (el) {
       el.setAttribute('aria-label', n ? 'Cart, ' + n + (n === 1 ? ' item' : ' items') : 'Cart, empty');
@@ -80,8 +97,9 @@
     add(makeKey(btn.getAttribute('data-add-to-cart'), btn.getAttribute('data-option')));
     btn.lastChild.textContent = 'Added';
     btn.setAttribute('aria-live', 'polite');
+    btn.classList.remove('is-added'); void btn.offsetWidth; btn.classList.add('is-added');   // plus -> check, button pops
     clearTimeout(btn._t);
-    btn._t = setTimeout(function () { btn.lastChild.textContent = btn._label; }, 1400);
+    btn._t = setTimeout(function () { btn.lastChild.textContent = btn._label; btn.classList.remove('is-added'); }, 1500);
   });
 
   /* ---------- Cart page ---------- */
