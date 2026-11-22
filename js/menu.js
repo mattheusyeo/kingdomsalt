@@ -38,7 +38,9 @@
     if (a.target && a.target !== '_self') return;
     if (!/^(https?|file):$/.test(a.protocol)) return;               // mailto:, tel: ...
     if (a.origin !== window.location.origin) return;                 // other websites
-    var samePage = a.pathname === window.location.pathname && a.search === window.location.search;
+    // Cloudflare serves /contact for contact.html (and / for index.html), so compare the page names without ".html"
+    function pageName(path) { return path.replace(/\/index\.html$/, '/').replace(/\.html$/, '') || '/'; }
+    var samePage = pageName(a.pathname) === pageName(window.location.pathname) && a.search === window.location.search;
     if (samePage && a.hash) return;                                  // jump within this page
     e.preventDefault();
     if (samePage) {                                                  // already here: close the menu and go to the top
