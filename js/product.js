@@ -59,32 +59,36 @@
       backLink.textContent = '← ' + CATEGORY[cat];
     }
 
-    /* ----- photos: one big photo, or a scrolling carousel when there are several ----- */
+    /* ----- photos: one big photo, or a scrolling carousel. Every option (scent, colour...) is a slide too ----- */
     var photos = (product.images && product.images.length)
       ? product.images
       : [{ src: product.image, alt: product.alt || product.name }];
-    photos = photos.slice(0, 12);
+    var slides = photos.slice(0, 8).map(function (ph) { return { src: ph.src, alt: ph.alt || product.name, optionId: null }; });
+    var optValues = (product.options && product.options.values) || [];
+    var slideOf = {};                                              // option id -> slide number
+    optValues.forEach(function (v) {
+      if (!v.image) return;
+      slideOf[v.id] = slides.length;
+      slides.push({ src: v.image, alt: v.alt || (product.name + ' \u2013 ' + v.name), optionId: v.id });
+    });
     var openPhoto = makeLightbox();
-    var current = { src: photos[0].src, alt: photos[0].alt || product.name };
-    var mainImg = null;
-    var multi = photos.length > 1;
+    var multi = slides.length > 1;
+    var onLand = function () {};                                   // set later: selects the option whose photo the visitor scrolled to
     var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var collage = el('div', 'collage' + (multi ? ' is-carousel' : ''));
     var track = el('div', 'collage-track');
     if (multi) { track.tabIndex = 0; track.setAttribute('role', 'group'); track.setAttribute('aria-roledescription', 'carousel'); track.setAttribute('aria-label', product.name + ' photos'); }
-    photos.forEach(function (ph, i) {
+    slides.forEach(function (sl, i) {
       var tile = el('button', 'collage-item');
       tile.type = 'button';
-      tile.setAttribute('aria-label', 'Enlarge photo ' + (i + 1) + ' of ' + photos.length);
+      tile.setAttribute('aria-label', 'Enlarge photo ' + (i + 1) + ' of ' + slides.length);
+      if (sl.optionId) tile.setAttribute('data-slide-option', sl.optionId);
       var img = el('img');
-      img.src = ph.src; img.alt = ph.alt || product.name;
+      img.src = sl.src; img.alt = sl.alt;
       img.decoding = 'async';
       if (i === 0) window.khFadeIn(img);
       tile.appendChild(img);
-      if (i === 0) mainImg = img;
-      tile.addEventListener('click', function () {
-        if (i === 0) openPhoto(current.src, current.alt); else openPhoto(ph.src, ph.alt || product.name);
-      });
+      tile.addEventListener('click', function () { openPhoto(sl.src, sl.alt); });
       track.appendChild(tile);
     });
     collage.appendChild(track);
@@ -96,24 +100,32 @@
       var nextB = el('button', 'collage-arrow collage-next'); nextB.type = 'button'; nextB.setAttribute('aria-label', 'Next photo'); nextB.innerHTML = arrowSvg('M9 5l7 7-7 7');
       var count = el('span', 'collage-count'); count.setAttribute('aria-hidden', 'true');
       var dots = el('div', 'collage-dots');
-      var dotEls = photos.map(function (ph, i) {
+      var dotEls = slides.map(function (sl, i) {
         var d = el('button', 'collage-dot'); d.type = 'button'; d.setAttribute('aria-label', 'Show photo ' + (i + 1));
         d.addEventListener('click', function () { goTo(i); });
         dots.appendChild(d); return d;
       });
       goTo = function (i) {
-        i = Math.max(0, Math.min(photos.length - 1, i));
+        i = Math.max(0, Math.min(slides.length - 1, i));
         track.scrollTo({ left: i * track.clientWidth, behavior: reduceMotion ? 'auto' : 'smooth' });
       };
       var sync = function () {
         var i = Math.round(track.scrollLeft / Math.max(1, track.clientWidth));
         dotEls.forEach(function (d, k) { d.setAttribute('aria-current', k === i ? 'true' : 'false'); });
-        count.textContent = (i + 1) + ' / ' + photos.length;
-        prevB.disabled = i <= 0; nextB.disabled = i >= photos.length - 1;
+        count.textContent = (i + 1) + ' / ' + slides.length;
+        prevB.disabled = i <= 0; nextB.disabled = i >= slides.length - 1;
       };
       prevB.addEventListener('click', function () { goTo(Math.round(track.scrollLeft / track.clientWidth) - 1); });
       nextB.addEventListener('click', function () { goTo(Math.round(track.scrollLeft / track.clientWidth) + 1); });
-      track.addEventListener('scroll', function () { window.requestAnimationFrame(sync); }, { passive: true });
+      var settleTimer = null;
+      var settle = function () {                                     // after the carousel stops moving
+        var i = Math.round(track.scrollLeft / Math.max(1, track.clientWidth));
+        if (slides[i] && slides[i].optionId) onLand(slides[i].optionId);
+      };
+      track.addEventListener('scroll', function () {
+        window.requestAnimationFrame(sync);
+        clearTimeout(settleTimer); settleTimer = setTimeout(settle, 160);
+      }, { passive: true });
       track.addEventListener('keydown', function (e) {
         if (e.key === 'ArrowRight') { e.preventDefault(); nextB.click(); } else if (e.key === 'ArrowLeft') { e.preventDefault(); prevB.click(); }
       });
@@ -153,7 +165,7 @@
       grid.setAttribute('role', 'radiogroup');
       grid.setAttribute('aria-labelledby', 'options-label');
       var hint = el('p', 'options-hint', 'Choose a ' + noun + ' to add this to your cart.');
-      var buttons = [];
+      var buttons = [], choosers = {};
 
       values.forEach(function (v) {
         var b = el('button', 'option');
@@ -167,30 +179,35 @@
           b.appendChild(t);
         }
         b.appendChild(el('span', 'option-name', v.name));
-        b.addEventListener('click', function () {
+        var choose = function (fromScroll) {
           buttons.forEach(function (x) {
             var on = x === b;
             x.setAttribute('aria-checked', on ? 'true' : 'false');
             x.classList.toggle('is-selected', on);
           });
           chosenName.textContent = ': ' + v.name;
-          if (v.image && mainImg) {
-            mainImg.classList.remove('is-loaded');
-            mainImg.src = v.image;
-            mainImg.alt = v.alt || (product.name + ' \u2013 ' + v.name);
-            current = { src: mainImg.src, alt: mainImg.alt };
-            window.khFadeIn(mainImg);
-            goTo(0);                                       // show the chosen option's photo
-          }
           add.setAttribute('data-option', v.id);
           add.disabled = false;
           hint.hidden = true;
-        });
+          if (!fromScroll && slideOf[v.id] !== undefined) {
+            goTo(slideOf[v.id]);                                                     // bring its photo up in the carousel
+            // on a phone or tablet the photo is above the options: scroll back up if it has left the screen
+            var box = collage.getBoundingClientRect();
+            if (window.innerWidth <= 1100 && box.top < 90) {
+              collage.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+            }
+          }
+        };
+        b.addEventListener('click', function () { choose(false); });
+        choosers[v.id] = choose;
         buttons.push(b);
         grid.appendChild(b);
       });
-      // fetch the other photos quietly so choosing an option swaps instantly
-      setTimeout(function () { values.forEach(function (v) { if (v.image) { var pre = new Image(); pre.src = v.image; } }); }, 400);
+      // scrolling to an option's photo selects that option too
+      onLand = function (optionId) {
+        var cur = add.getAttribute('data-option');
+        if (cur !== optionId && choosers[optionId]) choosers[optionId](true);
+      };
       group.appendChild(grid);
       group.appendChild(hint);
       info.appendChild(group);
