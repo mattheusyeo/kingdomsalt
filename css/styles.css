@@ -300,6 +300,7 @@ ol { list-style: none; }
   position: absolute; inset: 0;
   width: 100%; height: 100%;
   object-fit: cover;
+  object-position: 70% 0%;       /* keep the top of the mountain in view */
   transition: transform 0.6s ease;
 }
 .footer-card:hover .footer-img { transform: scale(1.03); }
