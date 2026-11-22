@@ -99,11 +99,16 @@
       var prevB = el('button', 'collage-arrow collage-prev'); prevB.type = 'button'; prevB.setAttribute('aria-label', 'Previous photo'); prevB.innerHTML = arrowSvg('M15 5l-7 7 7 7');
       var nextB = el('button', 'collage-arrow collage-next'); nextB.type = 'button'; nextB.setAttribute('aria-label', 'Next photo'); nextB.innerHTML = arrowSvg('M9 5l7 7-7 7');
       var count = el('span', 'collage-count'); count.setAttribute('aria-hidden', 'true');
+      // at most three dots are visible; the strip slides along as the photos change
+      var DOT_SLOT = 18, DOTS_SHOWN = Math.min(3, slides.length);
       var dots = el('div', 'collage-dots');
+      dots.style.width = (DOTS_SHOWN * DOT_SLOT) + 'px';
+      var dotsTrack = el('div', 'collage-dots-track');
+      dots.appendChild(dotsTrack);
       var dotEls = slides.map(function (sl, i) {
         var d = el('button', 'collage-dot'); d.type = 'button'; d.setAttribute('aria-label', 'Show photo ' + (i + 1));
         d.addEventListener('click', function () { goTo(i); });
-        dots.appendChild(d); return d;
+        dotsTrack.appendChild(d); return d;
       });
       goTo = function (i) {
         i = Math.max(0, Math.min(slides.length - 1, i));
@@ -111,7 +116,15 @@
       };
       var sync = function () {
         var i = Math.round(track.scrollLeft / Math.max(1, track.clientWidth));
-        dotEls.forEach(function (d, k) { d.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+        var start = Math.max(0, Math.min(slides.length - DOTS_SHOWN, i - 1));     // the three dots on show
+        dotsTrack.style.transform = 'translateX(' + (-start * DOT_SLOT) + 'px)';
+        dotEls.forEach(function (d, k) {
+          var shown = k >= start && k < start + DOTS_SHOWN;
+          var edgeWithMore = (k === start && start > 0) || (k === start + DOTS_SHOWN - 1 && start + DOTS_SHOWN < slides.length);
+          d.setAttribute('aria-current', k === i ? 'true' : 'false');
+          d.classList.toggle('is-small', shown && edgeWithMore && k !== i);      // a smaller dot hints there are more photos that way
+          d.tabIndex = shown ? 0 : -1; d.setAttribute('aria-hidden', shown ? 'false' : 'true');
+        });
         count.textContent = (i + 1) + ' / ' + slides.length;
         prevB.disabled = i <= 0; nextB.disabled = i >= slides.length - 1;
       };

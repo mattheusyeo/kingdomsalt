@@ -552,16 +552,26 @@ a.g-img:hover img { transform: scale(1.03); }
 .collage-prev { left: 14px; }
 .collage-next { right: 14px; }
 .collage-arrow:disabled { opacity: 0; pointer-events: none; }
-.collage-arrow:focus-visible, .collage-dot:focus-visible { outline: 2px solid var(--headline); outline-offset: 2px; }
+.collage-arrow:focus-visible { outline: 2px solid var(--headline); outline-offset: 2px; }
 .collage-count {
   position: absolute; top: 14px; right: 14px; z-index: 2;
   padding: 4px 12px; border-radius: 999px;
   background: rgba(20, 18, 14, 0.6); color: #fff;
   font-size: 13px; font-weight: 500; font-variant-numeric: tabular-nums;
 }
-.collage-dots { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
-.collage-dot { width: 10px; height: 10px; padding: 0; border: 0; border-radius: 50%; background: #cfcfcf; cursor: pointer; transition: background 0.2s ease, transform 0.2s ease; }
-.collage-dot[aria-current="true"] { background: #111; transform: scale(1.25); }
+.collage-dots { overflow: hidden; margin: 14px auto 0; height: 18px; }
+.collage-dots-track { display: flex; transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+.collage-dot {
+  flex: 0 0 18px; width: 18px; height: 18px; padding: 0; border: 0; background: none; cursor: pointer;
+  display: grid; place-items: center;
+}
+.collage-dot::before {
+  content: ""; display: block; width: 10px; height: 10px; border-radius: 5px;
+  background: #cfcfcf;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease, transform 0.3s ease;
+}
+.collage-dot.is-small::before { transform: scale(0.6); }
+.collage-dot[aria-current="true"]::before { width: 18px; background: #111; }
 
 .product-info { display: flex; flex-direction: column; gap: 22px; padding-top: 6px; }
 .product-title {
@@ -824,4 +834,6 @@ button.contact-value.is-copied { text-decoration: none; }
   .button.is-added, .cart-count.bump { animation: none; }
 }
 
-@media (prefers-reduced-motion: reduce) { .collage-item img, .collage-dot, .collage-arrow { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .collage-item img, .collage-dot::before, .collage-arrow, .collage-dots-track { transition: none; } }
+.collage-dot:focus-visible { outline: none; }
+.collage-dot:focus-visible::before { outline: 2px solid var(--headline); outline-offset: 2px; }
