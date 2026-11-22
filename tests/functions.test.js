@@ -291,7 +291,7 @@ test('webhook order keeps the chosen scent and flags a missing AliExpress varian
 
 test('the placeholder flowers are gone', () => {
   assert.equal(catalog.products.some((p) => p.unit === 'Bunch'), false);
-  assert.deepEqual(catalog.products.map((p) => p.id).sort(), ['acrylic-pen-holder', 'floral-pen-set', 'scented-tin-candle', 'steamed-bun-keychain']);
+  assert.deepEqual(catalog.products.map((p) => p.id).sort(), ['acrylic-pen-holder', 'charm-keychain', 'floral-pen-set', 'scented-tin-candle', 'steamed-bun-keychain']);
 });
 
 test('home page banner: every banner photo exists and the order is candle, floral pens, pen holder', () => {
@@ -312,4 +312,12 @@ test('the steamed bun keychain is in accessories at $9.95 with six colours', () 
   assert.deepEqual(p.options.values.map((v) => v.id), ['yellow', 'pink', 'white', 'purple', 'green', 'teal']);
   assert.equal(priceCart(catalog, [{ id: p.id, option: 'pink', qty: 1 }]).lines[0].unitAmount, 995);
   assert.ok(priceCart(catalog, [{ id: p.id, qty: 1 }]).error, 'a colour must be chosen');
+});
+
+test('the charm keychain is in accessories at $12.95 with three styles and its AliExpress id', () => {
+  const p = catalog.products.find((x) => x.id === 'charm-keychain');
+  assert.equal(p.price, 1295);
+  assert.deepEqual(p.categories, ['accessories']);
+  assert.deepEqual(p.options.values.map((v) => v.id), ['cream', 'pink', 'purple']);
+  assert.equal(p.aliexpress.productId, '1005009306343409');
 });
