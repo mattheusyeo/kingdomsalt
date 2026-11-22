@@ -292,7 +292,7 @@ test('webhook order keeps the chosen scent and flags a missing AliExpress varian
 
 test('the placeholder flowers are gone', () => {
   assert.equal(catalog.products.some((p) => p.unit === 'Bunch'), false);
-  assert.deepEqual(catalog.products.map((p) => p.id).sort(), ['acrylic-pen-holder', 'charm-keychain', 'floral-pen-set', 'pencil-case-organizer', 'scented-tin-candle', 'smart-sensor-bin', 'steamed-bun-keychain', 'wireless-mini-vacuum']);
+  assert.deepEqual(catalog.products.map((p) => p.id).sort(), ['acrylic-pen-holder', 'bow-hair-claw', 'charm-keychain', 'floral-pen-set', 'pencil-case-organizer', 'scented-tin-candle', 'smart-sensor-bin', 'steamed-bun-keychain', 'wireless-mini-vacuum']);
 });
 
 test('home page banner: every banner photo exists and the order is candle, floral pens, pen holder', () => {
@@ -321,4 +321,12 @@ test('the charm keychain is in accessories at $12.95 with three styles and its A
   assert.deepEqual(p.categories, ['accessories']);
   assert.deepEqual(p.options.values.map((v) => v.id), ['cream', 'pink', 'purple']);
   assert.equal(p.aliexpress.productId, '1005009306343409');
+});
+
+test('bow hair claw: every photo exists and the set of 3 has its own price', () => {
+  const claw = catalog.products.find((p) => p.id === 'bow-hair-claw');
+  assert.deepEqual(claw.categories, ['accessories']);
+  const files = [claw.image, ...claw.images.map((i) => i.src), ...claw.options.values.flatMap((v) => [v.image, v.thumb])];
+  for (const f of files) assert.ok(existsSync(new URL(`../${f}`, import.meta.url)), `missing ${f}`);
+  assert.equal(claw.options.values.find((v) => v.id === 'set').price, 2995);
 });
