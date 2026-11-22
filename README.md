@@ -86,6 +86,7 @@ js/menu.js                                          menu dropdown + page fade
 js/gallery.js                                       fills the Gallery page from products.json
 js/hero.js                                          home page banner slideshow
 js/shelves.js                                       home page product rows ("Best of Lifestyle", ...)
+js/suggest.js                                       Gallery "You may be interested in" row (random products)
 js/product.js                                       product page: collage, description, add to cart
 js/cart.js                                          cart + hand-off to Stripe
 data/products.json                                  products, prices, shipping
