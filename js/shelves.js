@@ -10,7 +10,6 @@
     { id: 'stationery', name: 'Stationery' },
     { id: 'accessories', name: 'Accessories' }
   ];
-  var MAX_SWATCHES = 5;
   var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var chevronRight = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>';
   var chevronLeft = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>';
@@ -34,23 +33,6 @@
     window.khFadeIn(img);
     frame.appendChild(img);
     card.appendChild(frame);
-
-    var values = (p.options && p.options.values) || [];
-    if (values.length) {
-      var sw = el('span', 'card-swatches');
-      sw.setAttribute('aria-hidden', 'true');
-      values.slice(0, MAX_SWATCHES).forEach(function (v) {
-        var s = el('span', 'swatch');
-        var t = el('img'); t.src = v.thumb || v.image; t.alt = ''; t.width = 44; t.height = 44; t.loading = 'lazy';
-        s.appendChild(t);
-        // hovering a swatch shows that option's photo on the card
-        s.addEventListener('mouseenter', function () { if (v.image) img.src = v.image; });
-        sw.appendChild(s);
-      });
-      if (values.length > MAX_SWATCHES) sw.appendChild(el('span', 'swatch-more', '+' + (values.length - MAX_SWATCHES)));
-      card.addEventListener('mouseleave', function () { img.src = p.image; });
-      card.appendChild(sw);
-    }
 
     card.appendChild(el('span', 'card-name', p.name));
     card.appendChild(el('span', 'card-price', money(p.price)));
