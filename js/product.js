@@ -150,7 +150,8 @@
     /* ----- product information ----- */
     var info = el('div', 'product-info');
     info.appendChild(el('h1', 'product-title', product.name));
-    info.appendChild(el('p', 'product-price', money(product.price, product.unit)));
+    var priceEl = el('p', 'product-price', money(product.price, product.unit));
+    info.appendChild(priceEl);
     info.appendChild(el('p', 'cart-fineprint product-aud', 'Prices in Australian dollars (AUD).'));
 
     (product.description || []).forEach(function (para) {
@@ -199,6 +200,7 @@
             x.classList.toggle('is-selected', on);
           });
           chosenName.textContent = ': ' + v.name;
+          priceEl.textContent = money(v.price != null ? v.price : product.price, product.unit);   // an option can have its own price (e.g. Set of 3)
           add.setAttribute('data-option', v.id);
           add.disabled = false;
           hint.hidden = true;
