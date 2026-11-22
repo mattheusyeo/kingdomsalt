@@ -98,3 +98,7 @@ tests/functions.test.js                             automated tests for the serv
 ## About the photo quality
 
 The product, banner and scent photos were enlarged four times with a generative image enlarger (Real-ESRGAN), which sharpens by adding plausible fine detail. It is much clearer than a plain enlargement, but it is still based on small supplier photos, so tiny text and fine patterns are the model's best reconstruction. Replace them with your own photos of the samples when they arrive.
+
+## Live site
+
+The site is published with Cloudflare Pages at https://kingdomsalt.pages.dev and redeploys automatically whenever `main` changes on GitHub. Stripe keys and the `ORDERS` storage are set in the Pages project's Settings, not in this repository.
