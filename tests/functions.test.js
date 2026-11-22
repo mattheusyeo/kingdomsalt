@@ -291,7 +291,7 @@ test('webhook order keeps the chosen scent and flags a missing AliExpress varian
 
 test('the placeholder flowers are gone', () => {
   assert.equal(catalog.products.some((p) => p.unit === 'Bunch'), false);
-  assert.deepEqual(catalog.products.map((p) => p.id).sort(), ['acrylic-pen-holder', 'charm-keychain', 'floral-pen-set', 'pencil-case-organizer', 'scented-tin-candle', 'smart-sensor-bin', 'steamed-bun-keychain']);
+  assert.deepEqual(catalog.products.map((p) => p.id).sort(), ['acrylic-pen-holder', 'charm-keychain', 'floral-pen-set', 'pencil-case-organizer', 'scented-tin-candle', 'smart-sensor-bin', 'steamed-bun-keychain', 'wireless-mini-vacuum']);
 });
 
 test('home page banner: every banner photo exists and the order is candle, floral pens, pen holder', () => {
