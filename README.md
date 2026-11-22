@@ -10,6 +10,7 @@ A static website (HTML, CSS, a little JavaScript) with a Stripe Checkout shop.
 | Contact (opens from the footer box and the Contact tab) | `contact.html` |
 | Cart | `cart.html` |
 | Thank-you page after paying | `success.html` |
+| Policies (linked from every footer): Shipping, Refunds, Terms of sale, Privacy | `shipping.html`, `refunds.html`, `terms.html`, `privacy.html` |
 
 ## How buying works
 
@@ -66,7 +67,8 @@ Run the automated tests with `npm test`.
 
 - [ ] Real products, prices and photos in `data/products.json` and `gallery.html`
 - [ ] Switch Stripe to **live mode**: new `sk_live_` key, a new live webhook endpoint and its `whsec_` secret
-- [ ] Add a refund / returns policy, shipping times and your contact details (customers and Stripe both expect them)
+- [x] Refund, shipping, terms and privacy pages (check they still match how you really operate, and add your ABN and real contact details)
+- [ ] Real contact email and phone number on `contact.html` and in the policy pages
 - [ ] **GST:** if you are registered, make sure prices include GST (or set up Stripe Tax)
 - [ ] Turn on customer receipt emails in Stripe (Settings, Customer emails)
 - [ ] Test a real small purchase and refund it

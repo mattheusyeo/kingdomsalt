@@ -113,6 +113,7 @@ test('checkout builds a Stripe session from SERVER prices, ignoring prices sent 
   assert.equal(f['line_items[0][price_data][product_data][metadata][sku]'], 'acrylic-pen-holder');
   assert.equal(f['line_items[0][price_data][product_data][images][0]'], 'https://shop.example/assets/acrylic-pen-holder.jpg');
   assert.equal(f['shipping_address_collection[allowed_countries][0]'], 'AU');
+  assert.match(f['custom_text[submit][message]'], /Terms of sale.*Refund policy.*Australian Consumer Law/);
   assert.equal(f['phone_number_collection[enabled]'], 'true');
   assert.equal(f['shipping_options[0][shipping_rate_data][fixed_amount][currency]'], 'aud');
   assert.equal(f['shipping_options[0][shipping_rate_data][delivery_estimate][minimum][unit]'], 'business_day');

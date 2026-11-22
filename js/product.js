@@ -232,7 +232,15 @@
     var ship = catalog.shipping || {};
     var shipText = (ship.amount === 0 ? 'Free shipping to Australia' : 'Shipping ' + money(ship.amount)) +
       (ship.minBusinessDays ? '. Estimated delivery ' + ship.minBusinessDays + '–' + ship.maxBusinessDays + ' business days.' : '.');
-    info.appendChild(el('p', 'product-ship', shipText));
+    var shipLine = el('p', 'product-ship', shipText + ' ');
+    var shipLink = el('a', null, 'Shipping and returns');
+    shipLink.href = 'shipping.html';
+    shipLine.appendChild(shipLink);
+    shipLine.appendChild(document.createTextNode(' \u00b7 '));
+    var refundLink = el('a', null, 'Refund policy');
+    refundLink.href = 'refunds.html';
+    shipLine.appendChild(refundLink);
+    info.appendChild(shipLine);
 
     if (product.details && product.details.length) {
       info.appendChild(el('h2', 'product-details-title', 'Details'));

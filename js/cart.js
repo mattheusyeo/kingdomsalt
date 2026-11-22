@@ -189,7 +189,14 @@
       line.appendChild(el('span', null, 'Subtotal'));
       line.appendChild(el('strong', null, fmt(subtotal)));
       summary.appendChild(line);
-      summary.appendChild(el('p', 'cart-fineprint', 'Shipping is shown at checkout. Prices are in Australian dollars (AUD).'));
+      var fine = el('p', 'cart-fineprint', 'Prices are in Australian dollars (AUD) and are the total you pay. Shipping to Australia is free, and delivery takes an estimated 10\u201325 business days. By checking out you agree to our ');
+      [['terms.html', 'Terms of sale'], ['shipping.html', 'Shipping policy'], ['refunds.html', 'Refund policy']].forEach(function (l, i) {
+        var a = el('a', null, l[1]); a.href = l[0];
+        fine.appendChild(document.createTextNode(i === 0 ? '' : i === 2 ? ' and ' : ', '));
+        fine.appendChild(a);
+      });
+      fine.appendChild(document.createTextNode('.'));
+      summary.appendChild(fine);
       var status = el('p', 'cart-error'); status.setAttribute('role', 'alert'); status.hidden = true;
       var go = el('button', 'button button-lg', 'Checkout');
       go.type = 'button';

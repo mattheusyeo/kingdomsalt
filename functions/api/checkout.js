@@ -56,6 +56,10 @@ export async function onRequestPost({ request, env }) {
     // The supplier needs a delivery address and a phone number for the courier
     shipping_address_collection: { allowed_countries: catalog.allowedCountries },
     phone_number_collection: { enabled: true },
+    // shown above the Pay button (plain text: Stripe does not make links in this message)
+    custom_text: {
+      submit: { message: `By paying you agree to our Terms of sale, Shipping policy and Refund policy at ${origin}/terms. Estimated delivery to Australia is ${shipping.minBusinessDays} to ${shipping.maxBusinessDays} business days. Your Australian Consumer Law rights are not affected.` },
+    },
     shipping_options: [
       {
         shipping_rate_data: {
