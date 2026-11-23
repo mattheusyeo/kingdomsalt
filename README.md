@@ -104,4 +104,4 @@ The product, banner and scent photos were enlarged four times with a generative 
 
 ## Live site
 
-The site is published with Cloudflare Pages at https://kingdomsalt.pages.dev and redeploys automatically whenever `main` changes on GitHub. Stripe keys and the `ORDERS` storage are set in the Pages project's Settings, not in this repository.
+The site is published with Cloudflare Pages at https://kingdomsalt.com.au (also reachable at https://kingdomsalt.pages.dev) and redeploys automatically whenever `main` changes on GitHub. Stripe keys and the `ORDERS` storage are set in the Pages project's Settings, not in this repository.
