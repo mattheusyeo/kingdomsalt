@@ -5,7 +5,7 @@ A static website (HTML, CSS, a little JavaScript) with a Stripe Checkout shop.
 | Page | File |
 | --- | --- |
 | Home | `index.html` |
-| Gallery (Holders / Stationery / Accessories tabs) | `gallery.html` |
+| Gallery (Holders & Accessories / Stationery / Accessories tabs) | `gallery.html` |
 | Product page (opens from the Gallery) | `product.html` |
 | Contact (opens from the footer box and the Contact tab) | `contact.html` |
 | Cart | `cart.html` |
@@ -28,7 +28,7 @@ Everything is in Australian dollars (AUD) and deliveries are limited to Australi
 Everything about products and shipping is in **`data/products.json`**, and the Gallery page is built from it, so a price only ever needs changing in one place:
 
 - `price` is in **cents** (`2000` = $20.00).
-- `categories` says which tab shows the product: `lifestyle` (shown as "Holders"), `stationery` and/or `accessories`.
+- `categories` says which tab shows the product: `lifestyle` (shown as "Holders & Accessories"), `stationery` and/or `accessories`.
 - `unit` (optional) adds a suffix on the Gallery, e.g. `Bunch` shows "$55/Bunch".
 - `image` and `alt` are the photo shown in the Gallery and at Stripe checkout, and its description. `tint: true` darkens a photo slightly.
 - `images` (optional) is the list of photos on the product page, as `{ "src", "alt" }`. With five photos they form a collage (one large photo and four close-ups); with fewer they sit in a row under the main photo. Click a photo to enlarge it.
@@ -87,7 +87,7 @@ css/styles.css                                      all styling
 js/menu.js                                          menu dropdown + page fade
 js/gallery.js                                       fills the Gallery page from products.json
 js/hero.js                                          home page banner slideshow
-js/shelves.js                                       home page product rows ("Best of Holders", ...)
+js/shelves.js                                       home page product rows ("Best of Holders & Accessories", ...)
 js/suggest.js                                       Gallery "You may be interested in" row (random products)
 js/product.js                                       product page: collage, description, add to cart
 js/cart.js                                          cart + hand-off to Stripe

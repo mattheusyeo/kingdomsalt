@@ -5,7 +5,7 @@
   var root = document.getElementById('product-root');
   if (!root) return;
 
-  var CATEGORY = { lifestyle: 'Holders', stationery: 'Stationery', accessories: 'Accessories' };
+  var CATEGORY = { lifestyle: 'Holders & Accessories', stationery: 'Stationery', accessories: 'Accessories' };
   var id = new URLSearchParams(window.location.search).get('id');
 
   function el(tag, className, text) {

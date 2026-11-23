@@ -19,68 +19,95 @@
     return unit ? text + '/' + unit : text;
   }
 
+  // A few tabs show more than one section, each with its own small heading.
+  // "Holders & Accessories" (category "lifestyle") shows its holders, then the accessories.
+  var GROUPS = { lifestyle: ['lifestyle', 'accessories'] };
+
+  function card(p) {
+    var li = el('li', 'g-item');
+    var href = 'product.html?id=' + encodeURIComponent(p.id);
+
+    var info = el('div', 'g-info');
+    var name = el('p', 'g-name');
+    var nameLink = el('a', null, p.name);
+    nameLink.href = href;
+    name.appendChild(nameLink);
+    info.appendChild(name);
+    info.appendChild(el('p', 'g-price', price(p.price, p.unit)));
+    li.appendChild(info);
+
+    var frame = el('a', p.tint ? 'g-img g-tint' : 'g-img');
+    frame.href = href;
+    frame.setAttribute('aria-label', 'View ' + p.name);
+    var img = el('img');
+    img.alt = p.alt || p.name; img.decoding = 'async';
+    img.src = p.image;
+    window.khFadeIn(img);
+    frame.appendChild(img);
+    li.appendChild(frame);
+
+    var add;
+    if (p.options && p.options.values && p.options.values.length) {
+      // needs a choice (scent, size...) first, so send the customer to the product page
+      add = el('a', 'button g-add');
+      add.href = href;
+      add.appendChild(window.khAddIcon());
+      add.appendChild(document.createTextNode('Select options'));
+    } else {
+      add = el('button', 'button g-add');
+      add.type = 'button';
+      add.setAttribute('data-add-to-cart', p.id);
+      add.appendChild(window.khAddIcon());
+      add.appendChild(document.createTextNode('Add to cart'));
+    }
+    li.appendChild(add);
+    return li;
+  }
+
   window.khLoadCatalog()
     .then(function (catalog) {
       grid.textContent = '';                       // remove the placeholder card
-      var items = catalog.products.filter(function (p) {
-        return !category || (p.categories || []).indexOf(category) !== -1;
-      });
-      var known = category && catalog.labels && catalog.labels[category];
+      var labels = catalog.labels || {};
+      var label = document.getElementById('collection-label');
+      var forCat = function (cat) {
+        return catalog.products.filter(function (p) { return (p.categories || []).indexOf(cat) !== -1; });
+      };
+
+      var group = GROUPS[category];
+      if (group) {
+        var firstSection = grid.closest('section');
+        var anchor = firstSection;
+        group.forEach(function (cat, i) {
+          var gridEl = grid, labelEl = label;
+          if (i > 0) {                              // a further section below the first
+            var sec = el('section', 'g-section g-collection g-extra');
+            labelEl = el('h2', 'g-label is-ready');
+            gridEl = el('ul', 'g-grid is-short');
+            sec.appendChild(labelEl); sec.appendChild(gridEl);
+            anchor.parentNode.insertBefore(sec, anchor.nextSibling);
+            anchor = sec;
+          }
+          if (labelEl) { labelEl.textContent = labels[cat] || ''; labelEl.hidden = false; labelEl.classList.add('is-ready'); }
+          var list = forCat(cat);
+          if (!list.length) gridEl.appendChild(el('li', 'g-empty', 'New products are coming soon.'));
+          list.forEach(function (p) { gridEl.appendChild(card(p)); });
+        });
+        return;
+      }
+
+      var items = category ? forCat(category) : catalog.products;
+      var known = category && labels[category];
       if (items.length === 0 && known) {
         // a real tab with nothing in it yet
-        var label0 = document.getElementById('collection-label');
-        if (label0) label0.hidden = true;
+        if (label) label.hidden = true;
         grid.appendChild(el('li', 'g-empty', 'New products are coming soon.'));
         return;
       }
       // an unknown ?category= falls back to showing everything
       if (items.length === 0) items = catalog.products;
 
-      var label = document.getElementById('collection-label');
-      if (label && catalog.labels && catalog.labels[category]) { label.textContent = catalog.labels[category]; label.classList.add('is-ready'); }
-
-      items.forEach(function (p) {
-        var li = el('li', 'g-item');
-
-        var href = 'product.html?id=' + encodeURIComponent(p.id);
-
-        var info = el('div', 'g-info');
-        var name = el('p', 'g-name');
-        var nameLink = el('a', null, p.name);
-        nameLink.href = href;
-        name.appendChild(nameLink);
-        info.appendChild(name);
-        info.appendChild(el('p', 'g-price', price(p.price, p.unit)));
-        li.appendChild(info);
-
-        var frame = el('a', p.tint ? 'g-img g-tint' : 'g-img');
-        frame.href = href;
-        frame.setAttribute('aria-label', 'View ' + p.name);
-        var img = el('img');
-        img.alt = p.alt || p.name; img.decoding = 'async';
-        img.src = p.image;
-        window.khFadeIn(img);
-        frame.appendChild(img);
-        li.appendChild(frame);
-
-        var add;
-        if (p.options && p.options.values && p.options.values.length) {
-          // needs a choice (scent, size...) first, so send the customer to the product page
-          add = el('a', 'button g-add');
-          add.href = href;
-          add.appendChild(window.khAddIcon());
-          add.appendChild(document.createTextNode('Select options'));
-        } else {
-          add = el('button', 'button g-add');
-          add.type = 'button';
-          add.setAttribute('data-add-to-cart', p.id);
-          add.appendChild(window.khAddIcon());
-          add.appendChild(document.createTextNode('Add to cart'));
-        }
-        li.appendChild(add);
-
-        grid.appendChild(li);
-      });
+      if (label && labels[category]) { label.textContent = labels[category]; label.classList.add('is-ready'); }
+      items.forEach(function (p) { grid.appendChild(card(p)); });
     })
     .catch(function () {
       grid.appendChild(el('li', 'g-empty', 'We could not load the products. Please refresh the page.'));

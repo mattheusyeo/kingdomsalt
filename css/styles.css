@@ -808,3 +808,7 @@ button.contact-value.is-copied { text-decoration: none; }
 .header[hidden] { display: none; }
 .suggest[hidden] { display: none; }
 .header[hidden] + main .shelves { padding-top: 150px; }
+
+/* Second section on a tab (for example Accessories under Holders): no tall placeholder space */
+.g-grid.is-short { min-height: 0; }
+.g-extra { padding-top: 10px; }

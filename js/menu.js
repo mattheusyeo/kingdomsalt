@@ -19,7 +19,7 @@
   // Gallery page: gallery.html?category=lifestyle | stationery | accessories
   var title = document.getElementById('page-title');
   if (title) {
-    var names = { lifestyle: 'Holders', stationery: 'Stationery', accessories: 'Accessories' };
+    var names = { lifestyle: 'Holders & Accessories', stationery: 'Stationery', accessories: 'Accessories' };
     var category = new URLSearchParams(window.location.search).get('category');
     if (names[category]) {
       title.textContent = names[category];
