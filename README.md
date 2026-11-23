@@ -40,7 +40,7 @@ Everything about products and shipping is in **`data/products.json`**, and the G
 - `allowedCountries` is the list of countries you deliver to.
 - `aliexpress.productId` / `skuId` is the AliExpress product each item is ordered from (for products with options, put the `skuId` on each option instead). `productId` is the long number in the AliExpress link (`aliexpress.com/item/<number>.html`). `skuId` is the chosen variant and is still empty.
 
-To add a product: save its photo in `assets/`, then add a line to `products` in `data/products.json`. Photos can also be full `https://` links to the supplier's own image server (as the tea lights use) instead of files in `assets/`; if the supplier ever removes a photo, it will stop showing on the site.
+To add a product: save its photo in `assets/`, then add a line to `products` in `data/products.json`. Photos can also be full `https://` links to the supplier's own image server instead of files in `assets/`; if the supplier ever removes a photo, it will stop showing on the site, so saving photos in `assets/` is safer.
 
 > **Empty tabs:** a tab with no products (Accessories right now) shows "New products are coming soon." Add a product with that tab in its `categories` and it appears automatically.
 
