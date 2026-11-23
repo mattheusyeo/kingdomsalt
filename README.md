@@ -79,6 +79,17 @@ Right now each paid order is **recorded**, not forwarded. It is saved with the c
 
 To place AliExpress orders automatically you need an approved app on the **AliExpress Open Platform** with access to the dropshipping API. Once you have its app key and secret, the order call goes in `functions/_lib/fulfil.js` (the comment marks the spot), and each product needs its AliExpress `productId` and `skuId` in `data/products.json`.
 
+### AliExpress sign-in (built, not switched on yet)
+
+`functions/_lib/aliexpress.js` and two endpoints handle signing in to the AliExpress Open Platform:
+
+- `/api/aliexpress-callback` receives the approval from AliExpress and saves the sign-in token.
+- `/api/aliexpress-refresh` renews the token. The token lasts only about a day (the refresh token two days), so call this once a day with the header `Authorization: Bearer <ALIEXPRESS_ADMIN_SECRET>`.
+
+Cloudflare secrets needed (Settings, Variables and Secrets, **encrypted**): `ALIEXPRESS_APP_KEY`, `ALIEXPRESS_APP_SECRET`, `ALIEXPRESS_AUTH_STATE` (a long random text you choose, used in the approval link) and `ALIEXPRESS_ADMIN_SECRET` (another long random text). Never put these in the repository.
+
+The code follows AliExpress's documentation and is tested with a pretend server. The first real sign-in is the real test. Placing orders (`aliexpress.ds.order.create`) is the next step.
+
 ## Project layout
 
 ```

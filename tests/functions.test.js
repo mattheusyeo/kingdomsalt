@@ -278,3 +278,75 @@ test('webhook order keeps the chosen scent and flags a missing AliExpress varian
   assert.match(saved.fulfilment.reason, new RegExp(`${candle.id}/${v.id}`));
 });
 
+
+// ---------- AliExpress sign-in ----------
+import { sign as aeSign, exchangeCode, getAccessToken, TOKEN_KEY } from '../functions/_lib/aliexpress.js';
+import { onRequestGet as aeCallback } from '../functions/api/aliexpress-callback.js';
+import { onRequestPost as aeRefresh } from '../functions/api/aliexpress-refresh.js';
+
+const fakeKV = () => { const m = new Map(); return { m, get: async (k) => m.get(k) ?? null, put: async (k, v) => { m.set(k, v); } }; };
+const aeEnv = (extra = {}) => ({ ALIEXPRESS_APP_KEY: '123', ALIEXPRESS_APP_SECRET: 'shh', ALIEXPRESS_AUTH_STATE: 'state-xyz', ALIEXPRESS_ADMIN_SECRET: 'admin-pw', ORDERS: fakeKV(), ...extra });
+const fakeAliExpress = (respond) => {
+  globalThis.fetch = async (url, init = {}) => {
+    stripeCalls.push({ url: String(url), body: init.body });
+    return new Response(JSON.stringify(respond(String(url), Object.fromEntries(new URLSearchParams(init.body)))), { status: 200, headers: { 'Content-Type': 'application/json' } });
+  };
+};
+
+test('AliExpress signature is HMAC-SHA256 over the path and the sorted name+value pairs, in capitals', async () => {
+  const expected = createHmac('sha256', 'shh').update('/auth/token/createapp_key123codeabcsign_methodsha256timestamp1700000000000').digest('hex').toUpperCase();
+  assert.equal(await aeSign('shh', '/auth/token/create', { timestamp: '1700000000000', code: 'abc', app_key: '123', sign_method: 'sha256', sign: 'ignored' }), expected);
+});
+
+test('first sign-in swaps the code for a token and saves it (without the secret in the request)', async () => {
+  const env = aeEnv();
+  fakeAliExpress(() => ({ access_token: 'AT1', refresh_token: 'RT1', expires_in: 86400, refresh_expires_in: 172800, user_nick: 'shop' }));
+  const t = await exchangeCode(env, 'thecode');
+  assert.equal(t.accessToken, 'AT1'); assert.equal(t.refreshToken, 'RT1');
+  assert.equal(JSON.parse(env.ORDERS.m.get(TOKEN_KEY)).accessToken, 'AT1');
+  const call = stripeCalls[0];
+  assert.equal(call.url, 'https://api-sg.aliexpress.com/rest/auth/token/create');
+  const f = Object.fromEntries(new URLSearchParams(call.body));
+  assert.equal(f.code, 'thecode'); assert.equal(f.app_key, '123'); assert.equal(f.sign_method, 'sha256'); assert.match(f.sign, /^[0-9A-F]{64}$/);
+  assert.ok(!call.body.includes('shh'), 'the app secret must never be sent');
+});
+
+test('callback refuses a wrong or missing state, and accepts the right one', async () => {
+  const env = aeEnv();
+  fakeAliExpress(() => ({ access_token: 'AT1', refresh_token: 'RT1', expires_in: 86400 }));
+  let res = await aeCallback({ request: new Request('https://shop.example/api/aliexpress-callback?code=c&state=nope'), env });
+  assert.equal(res.status, 403);
+  res = await aeCallback({ request: new Request('https://shop.example/api/aliexpress-callback?code=c'), env });
+  assert.equal(res.status, 403);
+  assert.equal(stripeCalls.length, 0, 'no call to AliExpress without the right state');
+  res = await aeCallback({ request: new Request('https://shop.example/api/aliexpress-callback?code=c&state=state-xyz'), env });
+  assert.equal(res.status, 200);
+  assert.ok(env.ORDERS.m.get(TOKEN_KEY));
+  res = await aeCallback({ request: new Request('https://shop.example/api/aliexpress-callback?code=c&state=state-xyz'), env: { ...env, ALIEXPRESS_AUTH_STATE: undefined } });
+  assert.equal(res.status, 503);
+});
+
+test('refresh endpoint needs the admin secret, never returns the tokens, and keeps the refresh token', async () => {
+  const env = aeEnv();
+  env.ORDERS.m.set(TOKEN_KEY, JSON.stringify({ accessToken: 'old', refreshToken: 'RT1', expiresAt: Date.now() + 1000, refreshExpiresAt: Date.now() + 1e8 }));
+  fakeAliExpress((url, f) => { assert.equal(f.refresh_token, 'RT1'); return { access_token: 'AT2', expires_in: 86400 }; });
+  let res = await aeRefresh({ request: new Request('https://shop.example/api/aliexpress-refresh', { method: 'POST' }), env });
+  assert.equal(res.status, 403);
+  res = await aeRefresh({ request: new Request('https://shop.example/api/aliexpress-refresh', { method: 'POST', headers: { Authorization: 'Bearer admin-pw' } }), env });
+  assert.equal(res.status, 200);
+  const body = await res.text();
+  assert.ok(!body.includes('AT2') && !body.includes('RT1'));
+  const saved = JSON.parse(env.ORDERS.m.get(TOKEN_KEY));
+  assert.equal(saved.accessToken, 'AT2'); assert.equal(saved.refreshToken, 'RT1');
+});
+
+test('getAccessToken reuses a good token and renews one that is about to expire', async () => {
+  const env = aeEnv();
+  env.ORDERS.m.set(TOKEN_KEY, JSON.stringify({ accessToken: 'fresh', refreshToken: 'RT', expiresAt: Date.now() + 20 * 3600e3 }));
+  fakeAliExpress(() => { throw new Error('should not be called'); });
+  assert.equal(await getAccessToken(env), 'fresh');
+  env.ORDERS.m.set(TOKEN_KEY, JSON.stringify({ accessToken: 'stale', refreshToken: 'RT', expiresAt: Date.now() + 3600e3 }));
+  fakeAliExpress(() => ({ access_token: 'renewed', expires_in: 86400 }));
+  assert.equal(await getAccessToken(env), 'renewed');
+  await assert.rejects(() => getAccessToken(aeEnv()), /Not signed in/);
+});
