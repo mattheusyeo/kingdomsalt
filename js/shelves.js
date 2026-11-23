@@ -6,8 +6,8 @@
   if (!root) return;
 
   var CATEGORIES = [
-    { id: 'lifestyle', name: 'Holders & Accessories' },
-    { id: 'stationery', name: 'Stationery' },
+    { id: 'lifestyle', name: 'Holders' },
+    { id: 'stationery', name: 'Accessories' },
     { id: 'accessories', name: 'Candles' }
   ];
   var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;

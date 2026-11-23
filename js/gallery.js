@@ -19,9 +19,9 @@
     return unit ? text + '/' + unit : text;
   }
 
-  // A few tabs show more than one section, each with its own small heading.
-  // "Holders & Accessories" (category "lifestyle") shows its holders, then the accessories.
-  var GROUPS = { lifestyle: ['lifestyle', 'accessories'] };
+  // A tab can show several sections, each with its own small heading: { tabCategory: [category, category] }.
+  // None right now: each tab shows just its own products.
+  var GROUPS = {};
 
   function card(p) {
     var li = el('li', 'g-item');
