@@ -451,7 +451,7 @@ a.g-img:hover img { transform: scale(1.03); }
 .product-back:hover { color: var(--headline); }
 .product-back[hidden] { display: none; }
 
-.product { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 56px; align-items: start; }
+.product { display: grid; grid-template-columns: minmax(0, 520px) minmax(0, 560px); gap: 64px; align-items: start; }   /* photo box kept near the photos' real size so they look sharp */
 
 /* photos: one large photo, or a scrolling carousel */
 .collage { position: relative; }
