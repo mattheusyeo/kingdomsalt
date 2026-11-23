@@ -1,4 +1,4 @@
-// Home page: one scrolling row of products for each category ("Best of Lifestyle", ...).
+// Home page: one scrolling row of products for each category ("Best of Home", ...).
 // Built from data/products.json. Arrows and a progress bar appear only when a row has more
 // products than fit on screen; on touch screens you simply swipe.
 (function () {
@@ -6,7 +6,7 @@
   if (!root) return;
 
   var CATEGORIES = [
-    { id: 'lifestyle', name: 'Lifestyle' },
+    { id: 'lifestyle', name: 'Home' },
     { id: 'stationery', name: 'Stationery' },
     { id: 'accessories', name: 'Accessories' }
   ];
