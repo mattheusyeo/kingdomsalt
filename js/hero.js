@@ -26,14 +26,29 @@
     .then(function (catalog) {
       var products = catalog.products.filter(function (p) { return p.banner && p.banner.wide; })
         .sort(function (a, b) { return (a.banner.order || 99) - (b.banner.order || 99); });
-      if (!products.length) {         // no products with a banner (for example an empty shop): hide the banner
-        var wrap = hero.closest('.header') || hero;
-        wrap.hidden = true;
-        return;
-      }
-
       slidesBox.textContent = '';
       var slides = [], current = 0, timer = null, hovering = false;
+      var total = products.length + 1;                                   // the logo slide is always first
+
+      var brand = el('div', 'hero-slide');
+      brand.setAttribute('role', 'group');
+      brand.setAttribute('aria-roledescription', 'slide');
+      brand.setAttribute('aria-label', '1 of ' + total + ': Kingdomsalt');
+      var brandPic = el('picture');
+      var brandSrc = el('source');
+      brandSrc.media = '(max-width: 700px)';
+      brandSrc.srcset = 'assets/banner-logo-square.jpg';
+      brandPic.appendChild(brandSrc);
+      var brandImg = el('img');
+      brandImg.src = 'assets/banner-logo-1200.jpg';
+      brandImg.srcset = 'assets/banner-logo-1200.jpg 1200w, assets/banner-logo-2400.jpg 2400w';
+      brandImg.sizes = '(min-width: 1880px) 1720px, calc(100vw - 160px)';
+      brandImg.alt = 'Kingdomsalt: candles, holders and gifts';
+      brandImg.decoding = 'async';
+      brandPic.appendChild(brandImg);
+      brand.appendChild(brandPic);
+      slidesBox.appendChild(brand);
+      slides.push(brand);
 
       products.forEach(function (p, i) {
         var b = p.banner;
@@ -41,7 +56,7 @@
         a.href = 'product.html?id=' + encodeURIComponent(p.id);
         a.setAttribute('role', 'group');
         a.setAttribute('aria-roledescription', 'slide');
-        a.setAttribute('aria-label', (i + 1) + ' of ' + products.length + ': ' + p.name);
+        a.setAttribute('aria-label', (i + 2) + ' of ' + total + ': ' + p.name);
 
         var pic = el('picture');
         if (b.square) {
@@ -59,7 +74,7 @@
         }
         img.alt = b.alt || p.alt || p.name;
         img.decoding = 'async';
-        if (i > 0) img.loading = 'eager';
+        img.loading = 'eager';
         pic.appendChild(img);
         a.appendChild(pic);
 
