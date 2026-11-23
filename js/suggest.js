@@ -25,7 +25,7 @@
     var other = all.filter(function (p) { return !category || (p.categories || []).indexOf(category) === -1; });
     var same = all.filter(function (p) { return other.indexOf(p) === -1; });
     var picks = shuffle(other).concat(shuffle(same)).slice(0, COUNT);
-    if (!picks.length) return;
+    if (!picks.length) { root.hidden = true; return; }       // nothing to suggest (empty shop)
 
     root.textContent = '';
     var head = el('div', 'shelf-head');

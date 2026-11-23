@@ -9,8 +9,10 @@ import { buildOrder } from '../functions/_lib/fulfil.js';
 import { onRequestPost as checkout } from '../functions/api/checkout.js';
 import { onRequestPost as webhook } from '../functions/api/webhook.js';
 
-const catalogText = readFileSync(new URL('../data/products.json', import.meta.url), 'utf8');
+// The server tests use a fixed sample shop (tests/fixtures/catalog.json) so they keep working however the real shop changes.
+const catalogText = readFileSync(new URL('./fixtures/catalog.json', import.meta.url), 'utf8');
 const catalog = JSON.parse(catalogText);
+const liveCatalog = JSON.parse(readFileSync(new URL('../data/products.json', import.meta.url), 'utf8'));
 
 const realFetch = globalThis.fetch;
 let stripeCalls;
@@ -50,10 +52,10 @@ test('priceCart accepts a valid cart and rejects bad ones', () => {
 });
 
 test('products.json is well formed', () => {
-  assert.equal(catalog.currency, 'aud');
-  assert.deepEqual(catalog.allowedCountries, ['AU']);
+  assert.equal(liveCatalog.currency, 'aud');
+  assert.deepEqual(liveCatalog.allowedCountries, ['AU']);
   const ids = new Set();
-  for (const p of catalog.products) {
+  for (const p of liveCatalog.products) {
     assert.match(p.id, /^[a-z0-9-]+$/);
     assert.ok(Number.isInteger(p.price) && p.price > 0, `${p.id} price must be whole cents`);
     assert.ok(!ids.has(p.id), `${p.id} duplicated`);
@@ -61,7 +63,7 @@ test('products.json is well formed', () => {
     assert.ok(p.categories.length > 0 && p.categories.every((c) => ['lifestyle', 'stationery', 'accessories'].includes(c)), `${p.id} needs valid categories`);
     assert.ok(p.alt && p.image, `${p.id} needs an image and alt text`);
   }
-  for (const p of catalog.products.filter((x) => x.options)) {
+  for (const p of liveCatalog.products.filter((x) => x.options)) {
     assert.ok(p.options.label && p.options.values.length > 0, `${p.id}: options need a label and values`);
     const optionIds = new Set();
     for (const v of p.options.values) {
@@ -72,11 +74,11 @@ test('products.json is well formed', () => {
       for (const f of [v.image, v.thumb].filter(Boolean)) assert.ok(existsSync(new URL(`../${f}`, import.meta.url)), `${p.id}/${v.id}: missing file ${f}`);
     }
   }
-  for (const c of Object.keys(catalog.labels)) assert.ok(['lifestyle', 'stationery', 'accessories'].includes(c), `unknown label ${c}`);
+  for (const c of Object.keys(liveCatalog.labels)) assert.ok(['lifestyle', 'stationery', 'accessories'].includes(c), `unknown label ${c}`);
 });
 
 test('every photo mentioned in products.json exists, and descriptions are lists of text', () => {
-  for (const p of catalog.products) {
+  for (const p of liveCatalog.products) {
     const files = [p.image, ...(p.images || []).map((i) => i.src)];
     for (const f of files) assert.ok(existsSync(new URL(`../${f}`, import.meta.url)), `${p.id}: missing file ${f}`);
     for (const i of p.images || []) assert.ok(i.alt, `${p.id}: photo ${i.src} needs alt text`);
@@ -84,13 +86,6 @@ test('every photo mentioned in products.json exists, and descriptions are lists 
       if (p[key] !== undefined) assert.ok(Array.isArray(p[key]) && p[key].every((t) => typeof t === 'string' && t.length > 0), `${p.id}.${key}`);
     }
   }
-});
-
-test('the stationery tab has the pen holder at $22 with its AliExpress id', () => {
-  const p = catalog.products.find((x) => x.id === 'acrylic-pen-holder');
-  assert.equal(p.price, 2200);
-  assert.deepEqual(p.categories, ['stationery']);
-  assert.equal(p.aliexpress.productId, '1005009000500891');
 });
 
 // ---------- checkout ----------
@@ -229,14 +224,6 @@ test('buildOrder copes with a session that has no shipping details', () => {
   assert.deepEqual(order.items, []);
 });
 
-test('the floral pen set is in stationery at $13 with its AliExpress id, and the old gel pens are gone', () => {
-  const p = catalog.products.find((x) => x.id === 'floral-pen-set');
-  assert.equal(p.price, 1300);
-  assert.deepEqual(p.categories, ['stationery']);
-  assert.equal(p.aliexpress.productId, '1005010463038551');
-  assert.equal(catalog.products.find((x) => x.id === 'gel-pens-5-pack'), undefined);
-});
-
 // ---------- options (scents) ----------
 test('priceCart needs a valid option for products that have options, and refuses options on others', () => {
   const candle = catalog.products.find((p) => p.id === 'scented-tin-candle');
@@ -290,43 +277,3 @@ test('webhook order keeps the chosen scent and flags a missing AliExpress varian
   assert.match(saved.fulfilment.reason, new RegExp(`${candle.id}/${v.id}`));
 });
 
-test('the placeholder flowers are gone', () => {
-  assert.equal(catalog.products.some((p) => p.unit === 'Bunch'), false);
-  assert.deepEqual(catalog.products.map((p) => p.id).sort(), ['acrylic-pen-holder', 'bow-hair-claw', 'charm-keychain', 'floral-pen-set', 'pencil-case-organizer', 'scented-tin-candle', 'smart-sensor-bin', 'steamed-bun-keychain', 'wireless-mini-vacuum']);
-});
-
-test('home page banner: every banner photo exists and the order is candle, floral pens, pen holder', () => {
-  const withBanner = catalog.products.filter((p) => p.banner).sort((a, b) => a.banner.order - b.banner.order);
-  assert.deepEqual(withBanner.map((p) => p.id), ['scented-tin-candle', 'floral-pen-set', 'acrylic-pen-holder']);
-  for (const p of withBanner) {
-    for (const f of [p.banner.wide, p.banner.wide2x, p.banner.wide4k, p.banner.square]) {
-      assert.ok(existsSync(new URL(`../${f}`, import.meta.url)), `${p.id}: missing banner file ${f}`);
-    }
-    assert.ok(p.banner.alt, `${p.id}: banner needs alt text`);
-  }
-});
-
-test('the steamed bun keychain is in accessories at $12 with six colours', () => {
-  const p = catalog.products.find((x) => x.id === 'steamed-bun-keychain');
-  assert.equal(p.price, 1200);
-  assert.deepEqual(p.categories, ['accessories']);
-  assert.deepEqual(p.options.values.map((v) => v.id), ['yellow', 'pink', 'white', 'purple', 'green', 'teal']);
-  assert.equal(priceCart(catalog, [{ id: p.id, option: 'pink', qty: 1 }]).lines[0].unitAmount, 1200);
-  assert.ok(priceCart(catalog, [{ id: p.id, qty: 1 }]).error, 'a colour must be chosen');
-});
-
-test('the charm keychain is in accessories at $13.95 with three styles and its AliExpress id', () => {
-  const p = catalog.products.find((x) => x.id === 'charm-keychain');
-  assert.equal(p.price, 1395);
-  assert.deepEqual(p.categories, ['accessories']);
-  assert.deepEqual(p.options.values.map((v) => v.id), ['cream', 'pink', 'purple']);
-  assert.equal(p.aliexpress.productId, '1005009306343409');
-});
-
-test('bow hair claw: every photo exists and the set of 3 has its own price', () => {
-  const claw = catalog.products.find((p) => p.id === 'bow-hair-claw');
-  assert.deepEqual(claw.categories, ['accessories']);
-  const files = [claw.image, ...claw.images.map((i) => i.src), ...claw.options.values.flatMap((v) => [v.image, v.thumb])];
-  for (const f of files) assert.ok(existsSync(new URL(`../${f}`, import.meta.url)), `missing ${f}`);
-  assert.equal(claw.options.values.find((v) => v.id === 'set').price, 2995);
-});

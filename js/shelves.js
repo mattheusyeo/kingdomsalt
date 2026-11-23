@@ -102,6 +102,11 @@
 
   window.khLoadCatalog().then(function (catalog) {
     root.textContent = '';
+    if (!catalog.products.length) {                                   // nothing for sale yet
+      root.classList.add('is-empty');
+      root.appendChild(el('p', 'shelves-empty', 'New products are coming soon.'));
+      return;
+    }
     CATEGORIES.forEach(function (cat) {
       var items = catalog.products.filter(function (p) { return (p.categories || []).indexOf(cat.id) !== -1; });
       if (!items.length) return;

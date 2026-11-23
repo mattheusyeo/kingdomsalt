@@ -26,7 +26,11 @@
     .then(function (catalog) {
       var products = catalog.products.filter(function (p) { return p.banner && p.banner.wide; })
         .sort(function (a, b) { return (a.banner.order || 99) - (b.banner.order || 99); });
-      if (!products.length) return;   // keep the static first slide
+      if (!products.length) {         // no products with a banner (for example an empty shop): hide the banner
+        var wrap = hero.closest('.header') || hero;
+        wrap.hidden = true;
+        return;
+      }
 
       slidesBox.textContent = '';
       var slides = [], current = 0, timer = null, hovering = false;
