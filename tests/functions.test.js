@@ -80,7 +80,8 @@ test('products.json is well formed', () => {
 test('every photo mentioned in products.json exists, and descriptions are lists of text', () => {
   for (const p of liveCatalog.products) {
     const files = [p.image, ...(p.images || []).map((i) => i.src)];
-    for (const f of files) assert.ok(existsSync(new URL(`../${f}`, import.meta.url)), `${p.id}: missing file ${f}`);
+    // Photos can also be linked from a supplier's https image server instead of saved in assets/
+    for (const f of files.filter((f) => !/^https:\/\//.test(f))) assert.ok(existsSync(new URL(`../${f}`, import.meta.url)), `${p.id}: missing file ${f}`);
     for (const i of p.images || []) assert.ok(i.alt, `${p.id}: photo ${i.src} needs alt text`);
     for (const key of ['description', 'details']) {
       if (p[key] !== undefined) assert.ok(Array.isArray(p[key]) && p[key].every((t) => typeof t === 'string' && t.length > 0), `${p.id}.${key}`);
