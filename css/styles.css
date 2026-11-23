@@ -807,3 +807,4 @@ button.contact-value.is-copied { text-decoration: none; }
 .shelves-empty { text-align: center; font-size: 22px; color: var(--caption); }
 .header[hidden] { display: none; }
 .suggest[hidden] { display: none; }
+.header[hidden] + main .shelves { padding-top: 150px; }
