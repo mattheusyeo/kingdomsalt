@@ -6,7 +6,7 @@
   if (!root) return;
 
   var CATEGORIES = [
-    { id: 'lifestyle', name: 'Home' },
+    { id: 'lifestyle', name: 'Holders' },
     { id: 'stationery', name: 'Stationery' },
     { id: 'accessories', name: 'Accessories' }
   ];
