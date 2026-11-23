@@ -8,7 +8,7 @@
   var CATEGORIES = [
     { id: 'lifestyle', name: 'Holders & Accessories' },
     { id: 'stationery', name: 'Stationery' },
-    { id: 'accessories', name: 'Accessories' }
+    { id: 'accessories', name: 'Candles' }
   ];
   var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var chevronRight = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>';
