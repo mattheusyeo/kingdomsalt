@@ -68,7 +68,7 @@ Run the automated tests with `npm test`.
 - [ ] Real products, prices and photos in `data/products.json` and `gallery.html`
 - [ ] Switch Stripe to **live mode**: new `sk_live_` key, a new live webhook endpoint and its `whsec_` secret
 - [x] Refund, shipping, terms and privacy pages (check they still match how you really operate, and add your ABN and real contact details)
-- [ ] Real contact email and phone number on `contact.html` and in the policy pages
+- [x] Contact email (`hello@kingdomsalt.com.au`) on `contact.html` and in the policy pages. There is no phone number.
 - [ ] **GST:** if you are registered, make sure prices include GST (or set up Stripe Tax)
 - [ ] Turn on customer receipt emails in Stripe (Settings, Customer emails)
 - [ ] Test a real small purchase and refund it

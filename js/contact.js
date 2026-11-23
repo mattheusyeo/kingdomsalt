@@ -1,4 +1,4 @@
-// Contact page: clicking the email or the phone number copies it to the clipboard.
+// Contact page: clicking the email address copies it to the clipboard.
 (function () {
   var buttons = document.querySelectorAll('[data-copy]');
   var hint = document.getElementById('copy-hint');
@@ -38,7 +38,7 @@
         if (ok) {
           btn.classList.add('is-copied');
           label.textContent = 'Copied \u2713';
-          if (hint) hint.textContent = (btn.getAttribute('data-copy').indexOf('@') > -1 ? 'Email address' : 'Phone number') + ' copied to your clipboard.';
+          if (hint) hint.textContent = 'Email address copied to your clipboard.';
         } else if (hint) {
           hint.textContent = 'Could not copy automatically. Please select the text and copy it.';
         }
