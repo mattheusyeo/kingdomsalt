@@ -96,7 +96,9 @@
           s.setAttribute('aria-hidden', on ? 'false' : 'true');
           if (on) s.removeAttribute('inert'); else s.setAttribute('inert', '');
         });
+        if (dots) dots.forEach(function (d, i) { d.setAttribute('aria-current', i === current ? 'true' : 'false'); });
       }
+      var dots = null;
       function stop() { if (timer) { clearInterval(timer); timer = null; } }
       function start() {
         stop();
@@ -105,6 +107,17 @@
       }
       function restart() { start(); }
 
+      // little dots under the slides: one per slide, so it is clear how many there are (also work as buttons)
+      if (slides.length > 1) {
+        var dotBox = el('div', 'hero-dots');
+        dots = slides.map(function (s, i) {
+          var d = el('button', 'hero-dot'); d.type = 'button';
+          d.setAttribute('aria-label', 'Show slide ' + (i + 1) + ' of ' + slides.length);
+          d.addEventListener('click', function () { show(i); restart(); });
+          dotBox.appendChild(d); return d;
+        });
+        hero.appendChild(dotBox);
+      }
       show(0);
       if (slides.length < 2) return;
       prevBtn.hidden = false; nextBtn.hidden = false;

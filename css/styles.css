@@ -894,3 +894,12 @@ button.contact-value.is-copied { text-decoration: none; }
 
 /* On phones the home carousel is swiped, so the arrow buttons are hidden */
 @media (max-width: 700px) { .hero-arrow { display: none !important; } }
+
+/* dots under the home carousel */
+.hero-dots { position: absolute; left: 50%; bottom: 18px; z-index: 3; transform: translateX(-50%); display: flex; gap: 4px; padding: 4px 8px; border-radius: 999px; background: rgba(28, 24, 22, 0.35); }
+.hero-dot { width: 22px; height: 22px; display: grid; place-items: center; background: none; border: 0; padding: 0; cursor: pointer; }
+.hero-dot::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, 0.55); transition: width 0.3s ease, background 0.3s ease; }
+.hero-dot[aria-current="true"]::before { width: 20px; border-radius: 4px; background: #fff; }
+.hero-dot:focus-visible { outline: 2px solid #fff; outline-offset: 1px; border-radius: 50%; }
+@media (max-width: 700px) { .hero-dots { bottom: 12px; } .hero-caption { bottom: 46px; } }
+@media (prefers-reduced-motion: reduce) { .hero-dot::before { transition: none; } }
