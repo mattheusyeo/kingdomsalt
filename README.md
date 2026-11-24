@@ -68,7 +68,7 @@ Run the automated tests with `npm test`.
 - [ ] Real products, prices and photos in `data/products.json` and `gallery.html`
 - [ ] Switch Stripe to **live mode**: new `sk_live_` key, a new live webhook endpoint and its `whsec_` secret
 - [x] Refund, shipping, terms and privacy pages (check they still match how you really operate, and add your ABN and real contact details)
-- [x] Contact email (`hello@kingdomsalt.com.au`) on `contact.html` and in the policy pages. There is no phone number.
+- [x] Contact email (`hello@kingdomlightcandles.com.au`) on `contact.html` and in the policy pages. There is no phone number.
 - [ ] **GST:** if you are registered, make sure prices include GST (or set up Stripe Tax)
 - [ ] Turn on customer receipt emails in Stripe (Settings, Customer emails)
 - [ ] Test a real small purchase and refund it
@@ -104,4 +104,4 @@ The product, banner and scent photos were enlarged four times with a generative 
 
 ## Live site
 
-The site is published with Cloudflare Pages at https://kingdomsalt.com.au (also reachable at https://kingdomsalt.pages.dev) and redeploys automatically whenever `main` changes on GitHub. Stripe keys and the `ORDERS` storage are set in the Pages project's Settings, not in this repository.
+The site is published with Cloudflare Pages at https://kingdomlightcandles.com.au (also reachable at https://kingdomsalt.pages.dev; the old kingdomsalt.com.au redirects to the new address until it expires) and redeploys automatically whenever `main` changes on GitHub. Stripe keys and the `ORDERS` storage are set in the Pages project's Settings, not in this repository.
