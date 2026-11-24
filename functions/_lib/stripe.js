@@ -46,8 +46,7 @@ export async function stripeRequest(env, method, path, params) {
     err.status = res.status;
     err.type = (data.error && data.error.type) || null;   // short labels such as authentication_error: safe to show, unlike the full message
     err.code = (data.error && data.error.code) || null;
-    err.param = (data.error && data.error.param) || null;
-    err.detail = (data.error && data.error.message) || null;   // the name of the setting Stripe objected to, e.g. custom_text
+    err.param = (data.error && data.error.param) || null;   // the name of the setting Stripe objected to, e.g. custom_text
     throw err;
   }
   return data;
