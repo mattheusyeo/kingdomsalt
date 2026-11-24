@@ -28,27 +28,26 @@ a { color: inherit; text-decoration: none; }
 img { display: block; max-width: 100%; }
 ol { list-style: none; }
 
-/* ---------- Nav ---------- */
+/* ---------- Nav: one solid header, logo centred, tabs stretched across a second row ---------- */
+:root { --nav-top: 74px; --nav-row: 52px; --nav-extra: 44px; }          /* --nav-extra: how much taller the header is than the old 82px bar */
+body { padding-top: var(--nav-extra); }
 .nav {
   position: fixed;
-  top: 0; left: 40px; right: 40px;
+  top: 0; left: 0; right: 0;
   z-index: 10;
-  height: 82px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   background: var(--page);
-  border-bottom: 1px solid var(--divider);
-  text-transform: uppercase;
-  font-weight: 700;
+  padding: 0 40px;
 }
-
-.nav-bar { display: contents; }
-.nav-items { margin-left: auto; order: 1; }
+.nav-bar {
+  max-width: 1500px; margin: 0 auto;
+  height: var(--nav-top);
+  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+}
+.logo { grid-column: 2; padding-left: 0.2em; }
 .cart-link {
-  position: relative; order: 2;
+  position: relative; grid-column: 3; justify-self: end;
   display: inline-flex; align-items: center; justify-content: center;
-  width: 44px; height: 44px; margin-left: 24px;
+  width: 44px; height: 44px;
   color: var(--headline);
 }
 .cart-count {
@@ -64,32 +63,33 @@ ol { list-style: none; }
 .logo {
   font-family: "Cinzel", serif;
   font-weight: 500;
-  font-size: 40px;
+  font-size: clamp(24px, 3.4vw, 36px);
   line-height: 1.1;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.2em;
+  white-space: nowrap;
 }
 
 .nav-items {
-  display: flex;
-  gap: 40px;
-  font-size: 14px;
-  line-height: 1.4;
-  letter-spacing: 0.02em;
+  max-width: 760px; margin: 0 auto;
+  height: var(--nav-row);
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 17px; font-weight: 500; line-height: 1.4;
+  letter-spacing: 0.01em;
 }
+.nav-items a { padding: 8px 2px; }
 .nav-items a:hover { text-decoration: underline; text-underline-offset: 6px; }
 
 /* ---------- Hero ---------- */
 .header {
-  max-width: 1800px;
-  margin: 0 auto;
-  padding: 150px 40px 0;
+  margin: 0 -40px;
+  padding: 82px 0 0;                  /* the header (126px) minus the 44px the page already leaves for it */
 }
 
 /* Home page banner: a slideshow of the products */
 .hero {
   position: relative;
-  height: 570px;
-  border-radius: var(--radius);
+  height: min(62vh, 640px); min-height: 440px;
+  border-radius: 0;
   overflow: hidden;
   background: var(--cream);
 }
@@ -263,93 +263,25 @@ ol { list-style: none; }
 
 
 /* ---------- Tablet + phone ---------- */
-/* The menu collapses into a dropdown opened by the three-stripe button (top right). */
+/* The tabs stay on their own row at every width. */
 @media (max-width: 1100px) {
   html { scroll-padding-top: 100px; }
-  .nav { flex-direction: column; align-items: stretch; height: auto; border-bottom: 0; }
-  .nav-bar {
-    display: flex; align-items: center; justify-content: space-between;
-    height: 82px; border-bottom: 1px solid var(--divider);
-  }
-  .logo { margin-right: auto; }
-  .nav-items { margin-left: 0; order: 0; }
-  .cart-link { order: 0; margin-left: 0; margin-right: 6px; }
 
-  .menu-toggle {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 5px;
-    width: 40px; height: 40px;
-    margin-right: -8px;
-    padding: 0 8px;
-    background: none;
-    border: 0;
-    cursor: pointer;
-  }
-  .menu-toggle span {
-    display: block;
-    height: 2px;
-    background: var(--headline);
-    transition: transform 0.28s ease, opacity 0.2s ease;
-  }
-  .nav.open .menu-toggle span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-  .nav.open .menu-toggle span:nth-child(2) { opacity: 0; }
-  .nav.open .menu-toggle span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-  /* dropdown: fades and slides down; links follow one after another */
-  .nav-items {
-    display: flex;
-    position: absolute;
-    top: 100%; left: 0; right: 0;
-    flex-direction: column;
-    gap: 0;
-    padding: 0;
-    background: var(--page);
-    border-bottom: 1px solid var(--divider);
-    font-size: 14px;
-    letter-spacing: 0.02em;
-    visibility: hidden;
-    opacity: 0;
-    transform: translateY(-10px);
-    pointer-events: none;
-    transition: opacity 0.28s ease, transform 0.28s ease, visibility 0s linear 0.28s;
-  }
-  .nav.open .nav-items {
-    visibility: visible;
-    opacity: 1;
-    transform: none;
-    pointer-events: auto;
-    transition-delay: 0s;
-  }
-  .nav-items a {
-    padding: 16px 0;
-    border-bottom: 1px solid #e4e4e4;
-    opacity: 0;
-    transform: translateY(-6px);
-    transition: opacity 0.25s ease, transform 0.25s ease;
-  }
-  .nav.open .nav-items a { opacity: 1; transform: none; }
-  .nav.open .nav-items a:nth-child(1) { transition-delay: 0.05s; }
-  .nav.open .nav-items a:nth-child(2) { transition-delay: 0.10s; }
-  .nav.open .nav-items a:nth-child(3) { transition-delay: 0.15s; }
-  .nav.open .nav-items a:nth-child(4) { transition-delay: 0.20s; }
-  .nav-items a:last-child { border-bottom: 0; }
-
-  .hero { height: 460px; }
+  .hero { height: 460px; min-height: 0; }
   .g-section { flex-direction: column; gap: 24px; }
   .g-label { flex-basis: auto; }
 }
 
 /* ---------- Phone ---------- */
 @media (max-width: 600px) {
-  body { padding: 0 16px; }
+  body { padding: var(--nav-extra) 16px 0; }
   html { scroll-padding-top: 80px; }
-  .nav { left: 16px; right: 16px; }
-  .nav-bar { height: 64px; }
-  .logo { font-size: 22px; letter-spacing: 0.08em; }
-  .header { padding: 100px 0 0; }
-  .hero { height: 380px; }
+  :root { --nav-top: 60px; --nav-row: 46px; --nav-extra: 42px; }
+  .nav { padding: 0 16px; }
+  .nav-items { font-size: 14px; }
+  .logo { letter-spacing: 0.14em; }
+  .header { margin: 0 -16px; padding: 64px 0 0; }
+  .hero { height: 400px; min-height: 0; }
   .hero-caption { left: 12px; bottom: 12px; gap: 8px; padding: 8px 12px 7px; font-size: 12px; }
   .hero-cta { display: none; }
   .hero-arrow { width: 38px; height: 38px; }
@@ -816,7 +748,7 @@ button.contact-value.is-copied { text-decoration: none; }
 .shelves-empty { text-align: center; font-size: 22px; color: var(--caption); }
 .header[hidden] { display: none; }
 .suggest[hidden] { display: none; }
-.header[hidden] + main .shelves { padding-top: 150px; }
+.header[hidden] + main .shelves { padding-top: 100px; }
 
 /* Second section on a tab (for example Accessories under Holders): no tall placeholder space */
 .g-grid.is-short { min-height: 0; }

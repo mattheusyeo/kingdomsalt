@@ -2,15 +2,16 @@
 // (tablet and phone), and the Gallery page picks its title from the clicked tab.
 (function () {
   var nav = document.getElementById('nav');
-  var btn = nav.querySelector('.menu-toggle');
+  var btn = nav.querySelector('.menu-toggle');   // no longer on the pages (the tabs always show), kept for safety
 
   function setOpen(open) {
+    if (!btn) return;
     nav.classList.toggle('open', open);
     btn.setAttribute('aria-expanded', open ? 'true' : 'false');
     btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
   }
 
-  btn.addEventListener('click', function () { setOpen(!nav.classList.contains('open')); });
+  if (btn) btn.addEventListener('click', function () { setOpen(!nav.classList.contains('open')); });
   nav.querySelectorAll('.nav-items a').forEach(function (a) {
     a.addEventListener('click', function () { setOpen(false); });
   });
