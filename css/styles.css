@@ -866,3 +866,16 @@ button.contact-value.is-copied { text-decoration: none; }
   .story-banner::before { background: linear-gradient(180deg, rgba(28, 24, 22, 0.15) 0%, rgba(28, 24, 22, 0.88) 70%); }
   .story-banner-in { padding: 40px 16px; justify-content: flex-start; }
 }
+
+/* ---------- Footer: a shorter, contained box (clay stays at the sides), links bar tucked into its bottom ---------- */
+.footer { margin-bottom: 40px; }
+.footer-card { padding-top: 230px; }
+.footer-img { object-position: 70% 20%; }
+.monogram { font-size: 88px; }
+.footer-links { border-radius: 0 0 var(--radius) var(--radius); }
+@media (max-width: 1100px) { .footer-card { padding-top: 190px; } }
+@media (max-width: 600px) {
+  .footer { margin-bottom: 24px; }
+  .footer-card { padding-top: 150px; }
+  .monogram { font-size: 60px; }
+}
