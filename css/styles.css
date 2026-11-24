@@ -880,3 +880,14 @@ button.contact-value.is-copied { text-decoration: none; }
   .footer-card { padding: 150px 16px 20px; }
   .monogram { font-size: 60px; }
 }
+
+/* ---------- Tighter rhythm around the story banner (the gaps used to stack to about 210px) ---------- */
+.shelves { padding-bottom: 0; }
+.shelf:last-child { margin-bottom: 0; }
+.story-banner { margin: 60px -40px 56px; min-height: clamp(360px, 44vh, 440px); }
+.story-banner h2 { font-size: clamp(36px, 5.2vw, 64px); }
+.story-banner-copy { max-width: 560px; gap: 18px; }
+@media (max-width: 700px) {
+  .story-banner { margin: 40px -16px 36px; min-height: 420px; }
+  .story-banner h2 { font-size: clamp(32px, 9vw, 40px); }
+}
