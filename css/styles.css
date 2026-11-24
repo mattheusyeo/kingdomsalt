@@ -7,7 +7,10 @@
   --light: #f7f7f7;
   --cream: #f5eee0;
   --radius: 30px;
-  --page: #ecdccb;          /* clay: the page and menu background */
+  --page: #faf7f1;          /* soft ivory: the page and menu background */
+  --clay: #ecdccb;          /* clay: used for accent bands */
+  --sage: #e4eadb;          /* sage: accent band */
+  --night: #2c2825;         /* night: dark accent band */
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -896,3 +899,20 @@ button.contact-value.is-copied { text-decoration: none; }
 
 .intro .button { width: auto; align-self: center; padding-left: 34px; padding-right: 34px; }
 .cart-empty .button { width: auto; }
+
+/* ---------- Colour bands on the home page (full width, each section its own tint) ---------- */
+.promise, .moods, .story { box-shadow: 0 0 0 100vmax var(--band); clip-path: inset(0 -100vmax); background: var(--band); }
+.promise { --band: var(--clay); border: 0; margin-top: 56px; padding: 26px 0; }
+.moods { --band: var(--sage); margin-top: 0; padding: 80px 0 90px; }
+.story { --band: var(--night); margin: 90px auto 0; padding: 90px 0; }
+.story-inner { background: transparent; padding: 0 20px; }
+.story h2, .story p, .story .verse { color: #f5eee0; }
+.story .eyebrow, .story .verse cite { color: #f6b04a; }
+.story .verse { border-top-color: rgba(245, 238, 224, 0.28); }
+.moods .mood-name, .moods h2 { color: var(--ink); }
+.moods .mood-sub { color: #55604a; }
+.moods .mood-img { background: #f5eee0; }
+.intro { padding-bottom: 8px; }
+/* the footer image sits right under the dark story band: keep a little space */
+.story + .footer, main + .footer { margin-top: 0; }
+@media (max-width: 700px) { .promise { margin-top: 36px; } .moods { padding: 56px 0 64px; } .story { margin-top: 60px; padding: 60px 0; } }
