@@ -891,3 +891,6 @@ button.contact-value.is-copied { text-decoration: none; }
   .story-banner { margin: 40px -16px 36px; min-height: 420px; }
   .story-banner h2 { font-size: clamp(32px, 9vw, 40px); }
 }
+
+/* On phones the home carousel is swiped, so the arrow buttons are hidden */
+@media (max-width: 700px) { .hero-arrow { display: none !important; } }
