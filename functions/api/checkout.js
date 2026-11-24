@@ -82,6 +82,8 @@ export async function onRequestPost({ request, env }) {
     console.log('Stripe checkout error:', e.message);
     // `reason` is only Stripe's status and short error labels (never the message, which can name the key)
     const reason = [e.status, e.type, e.code, e.param].filter(Boolean).join(':') || 'unknown';
-    return json({ error: 'We could not start checkout. Please try again in a moment.', reason }, 502);
+    // For 400 "bad request" errors only, Stripe's message describes the request (it never contains the key); keys are stripped just in case
+    const detail = e.status === 400 && e.detail ? String(e.detail).replace(/\b(sk|rk|pk|whsec)_[A-Za-z0-9_]+/g, '[removed]').slice(0, 300) : undefined;
+    return json({ error: 'We could not start checkout. Please try again in a moment.', reason, detail }, 502);
   }
 }
