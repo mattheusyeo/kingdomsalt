@@ -7,8 +7,8 @@
   --light: #f7f7f7;
   --cream: #f5eee0;
   --radius: 30px;
-  --page: #faf7f1;          /* soft ivory: the page and menu background */
-  --clay: #ecdccb;          /* clay: used for accent bands */
+  --page: #ecdccb;          /* clay: the page and menu background */
+  --ivory: #faf7f1;         /* ivory: light accent band */
   --sage: #e4eadb;          /* sage: accent band */
   --night: #2c2825;         /* night: dark accent band */
 }
@@ -902,7 +902,7 @@ button.contact-value.is-copied { text-decoration: none; }
 
 /* ---------- Colour bands on the home page (full width, each section its own tint) ---------- */
 .promise, .moods, .story { box-shadow: 0 0 0 100vmax var(--band); clip-path: inset(0 -100vmax); background: var(--band); }
-.promise { --band: var(--clay); border: 0; margin-top: 56px; padding: 26px 0; }
+.promise { --band: var(--ivory); border: 0; margin-top: 56px; padding: 26px 0; }
 .moods { --band: var(--sage); margin-top: 0; padding: 80px 0 90px; }
 .story { --band: var(--night); margin: 90px auto 0; padding: 90px 0; }
 .story-inner { background: transparent; padding: 0 20px; }
