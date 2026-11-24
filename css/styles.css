@@ -236,12 +236,18 @@ ol { list-style: none; }
   gap: 60px 20px;
 }
 .g-item { display: flex; flex-direction: column; gap: 15px; }
+.g-item { min-width: 0; }
 .g-info {
-  display: flex; align-items: center; gap: 6px;
-  font-weight: 700; line-height: 1.4; white-space: nowrap;
+  /* a long name wraps onto a second line and the price drops under it, instead of running into the next card */
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; min-width: 0;
+  font-weight: 700; line-height: 1.4;
 }
-.g-name { font-size: 18px; text-transform: uppercase; color: var(--body); }
-.g-price { font-size: 15px; letter-spacing: -0.025em; color: rgba(0, 0, 0, 0.6); }
+.g-name { min-width: 0; font-size: 18px; text-transform: uppercase; color: var(--body); overflow-wrap: break-word; }
+.g-price { font-size: 15px; letter-spacing: -0.025em; color: rgba(0, 0, 0, 0.6); white-space: nowrap; }
+/* cards in the same row line their photos and buttons up, even when one name wraps and another does not */
+@supports (grid-template-rows: subgrid) {
+  .g-item { display: grid; grid-template-rows: subgrid; grid-row: span 3; row-gap: 15px; }
+}
 
 .g-img { position: relative; border-radius: var(--radius); overflow: hidden; aspect-ratio: 330 / 318; }
 .g-img img { width: 100%; height: 100%; object-fit: cover; }
