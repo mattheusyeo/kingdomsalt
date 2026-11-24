@@ -81,7 +81,7 @@ export async function onRequestPost({ request, env }) {
   } catch (e) {
     console.log('Stripe checkout error:', e.message);
     // `reason` is only Stripe's status and short error labels (never the message, which can name the key)
-    const reason = [e.status, e.type, e.code].filter(Boolean).join(':') || 'unknown';
+    const reason = [e.status, e.type, e.code, e.param].filter(Boolean).join(':') || 'unknown';
     return json({ error: 'We could not start checkout. Please try again in a moment.', reason }, 502);
   }
 }
