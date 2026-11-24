@@ -768,7 +768,7 @@ button.contact-value.is-copied { text-decoration: none; }
 .promise span { font-size: 15px; color: var(--caption); }
 
 .moods { max-width: 1500px; margin: 0 auto; padding: 90px 0 0; }
-.moods h2, .story h2 { font-family: "Cinzel", serif; font-weight: 600; font-size: clamp(28px, 4vw, 42px); letter-spacing: 0.01em; color: var(--headline); }
+.moods h2 { font-family: "Cinzel", serif; font-weight: 600; font-size: clamp(28px, 4vw, 42px); letter-spacing: 0.01em; color: var(--headline); }
 .moods h2 { margin-bottom: 34px; text-align: center; }
 .mood-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
 .mood { display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; color: var(--headline); }
@@ -779,11 +779,6 @@ button.contact-value.is-copied { text-decoration: none; }
 .mood-sub { font-size: 16px; color: var(--caption); }
 .mood:hover .mood-name { color: var(--amber); }
 
-.story { max-width: 1500px; margin: 0 auto 120px; }
-.story-inner { max-width: 760px; margin: 0 auto; padding: 56px 40px; display: flex; flex-direction: column; gap: 16px; text-align: center; background: var(--cream); border-radius: var(--radius); }
-.story p { font-size: 18px; line-height: 1.65; color: var(--body); }
-.verse { margin: 10px 0 0; padding-top: 18px; border-top: 1px solid rgba(44, 40, 37, 0.25); font-family: "Cinzel", serif; font-size: 22px; line-height: 1.4; color: var(--headline); }
-.verse cite { display: block; margin-top: 6px; font-family: "Outfit", sans-serif; font-style: normal; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--amber); }
 
 /* amber under the home product headings */
 .shelf-head h2 { position: relative; padding-bottom: 12px; }
@@ -816,8 +811,6 @@ button.contact-value.is-copied { text-decoration: none; }
   .intro { padding: 36px 0 8px; } .intro-text { font-size: 17px; }
   .promise { grid-template-columns: 1fr; gap: 14px; margin-top: 28px; }
   .mood-grid { grid-template-columns: 1fr; max-width: 360px; margin: 0 auto; gap: 34px; }
-  .story-inner { padding: 38px 22px; } .story { margin-bottom: 70px; }
-  .verse { font-size: 19px; }
   .pairs-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -833,7 +826,7 @@ button.contact-value.is-copied { text-decoration: none; }
 .cart-empty .button { width: auto; }
 
 /* ---------- Colour blocks on the home page (contained, so the clay stays at both sides and under the menu) ---------- */
-.promise, .moods, .story { max-width: 1500px; margin-left: auto; margin-right: auto; border-radius: var(--radius); background: var(--band); }
+.promise, .moods { max-width: 1500px; margin-left: auto; margin-right: auto; border-radius: var(--radius); background: var(--band); }
 .promise { --band: var(--ivory); border: 0; margin-top: 50px; padding: 26px 30px; }
 .moods { --band: var(--night); margin-top: 60px; padding: 70px 40px 80px; }
 .moods h2 { color: #f5eee0; margin-bottom: 40px; }
@@ -842,15 +835,34 @@ button.contact-value.is-copied { text-decoration: none; }
 .moods .mood-name { color: #f5eee0; }
 .moods .mood:hover .mood-name { color: #f6b04a; }
 .moods .mood-sub { color: rgba(245, 238, 224, 0.72); }
-.story { --band: var(--sage); margin-top: 80px; margin-bottom: 70px; padding: 80px 20px; }
-.story-inner { background: transparent; padding: 0 20px; }
-.story h2, .story p, .story .verse { color: var(--ink); }
-.story .eyebrow, .story .verse cite { color: var(--amber); }
-.story .verse { border-top-color: rgba(44, 40, 37, 0.25); }
 .intro { padding-bottom: 8px; }
 @media (max-width: 700px) {
   .promise { margin-top: 36px; padding: 22px 18px; }
   .moods { margin-top: 40px; padding: 48px 20px 56px; }
   .mood-grid { gap: 34px; max-width: 280px; }
-  .story { margin-top: 50px; margin-bottom: 40px; padding: 52px 8px; }
+}
+
+/* ---------- Story banner: full width, photo behind, text on the right (the mirror of the top banner) ---------- */
+.story-banner {
+  position: relative; isolation: isolate;
+  margin: 90px -40px 80px; min-height: clamp(420px, 56vh, 560px);
+  display: flex; align-items: center;
+  background: var(--night) url("../assets/banner-soy-candle-2400.jpg") left center / cover no-repeat;
+  color: #fff;
+}
+.story-banner::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(270deg, rgba(28, 24, 22, 0.86) 0%, rgba(28, 24, 22, 0.62) 40%, rgba(28, 24, 22, 0.04) 78%); }
+.story-banner-in { width: 100%; max-width: 1500px; margin: 0 auto; padding: 56px 40px; display: flex; justify-content: flex-end; }
+.story-banner-copy { max-width: 500px; display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+.eyebrow-line { font-size: clamp(17px, 2vw, 21px); padding-bottom: 6px; border-bottom: 1.5px solid rgba(255, 255, 255, 0.85); }
+.story-banner h2 { font-family: "Cinzel", serif; font-weight: 600; font-size: clamp(32px, 4.6vw, 54px); line-height: 1.1; letter-spacing: 0.01em; text-wrap: balance; }
+.story-banner p { font-size: clamp(16px, 1.5vw, 18px); line-height: 1.6; color: rgba(255, 255, 255, 0.92); }
+.story-banner .story-verse { font-family: "Cinzel", serif; font-size: clamp(17px, 1.7vw, 20px); color: #fff; }
+.story-verse span { display: block; margin-top: 4px; font-family: "Outfit", sans-serif; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #f6b04a; }
+.btn-white { display: inline-flex; margin-top: 8px; padding: 15px 38px; background: #fff; color: var(--ink); font-weight: 500; font-size: 17px; border-radius: 2px; }
+.btn-white:hover { background: var(--cream); }
+.btn-white:focus-visible { outline: 2px solid #f6b04a; outline-offset: 3px; }
+@media (max-width: 700px) {
+  .story-banner { margin: 56px -16px 50px; min-height: 480px; align-items: flex-end; }
+  .story-banner::before { background: linear-gradient(180deg, rgba(28, 24, 22, 0.15) 0%, rgba(28, 24, 22, 0.88) 70%); }
+  .story-banner-in { padding: 40px 16px; justify-content: flex-start; }
 }
