@@ -900,19 +900,25 @@ button.contact-value.is-copied { text-decoration: none; }
 .intro .button { width: auto; align-self: center; padding-left: 34px; padding-right: 34px; }
 .cart-empty .button { width: auto; }
 
-/* ---------- Colour bands on the home page (full width, each section its own tint) ---------- */
-.promise, .moods, .story { box-shadow: 0 0 0 100vmax var(--band); clip-path: inset(0 -100vmax); background: var(--band); }
-.promise { --band: var(--ivory); border: 0; margin-top: 56px; padding: 26px 0; }
-.moods { --band: var(--sage); margin-top: 0; padding: 80px 0 90px; }
-.story { --band: var(--night); margin: 90px auto 0; padding: 90px 0; }
-.story-inner { background: transparent; padding: 0 20px; }
-.story h2, .story p, .story .verse { color: #f5eee0; }
-.story .eyebrow, .story .verse cite { color: #f6b04a; }
-.story .verse { border-top-color: rgba(245, 238, 224, 0.28); }
-.moods .mood-name, .moods h2 { color: var(--ink); }
-.moods .mood-sub { color: #55604a; }
+/* ---------- Colour blocks on the home page (contained, so the clay stays at both sides and under the menu) ---------- */
+.promise, .moods, .story { max-width: 1500px; margin-left: auto; margin-right: auto; border-radius: var(--radius); background: var(--band); }
+.promise { --band: var(--ivory); border: 0; margin-top: 50px; padding: 26px 30px; }
+.moods { --band: var(--night); margin-top: 60px; padding: 70px 40px 80px; }
+.moods h2 { color: #f5eee0; margin-bottom: 40px; }
+.mood-grid { max-width: 940px; margin: 0 auto; gap: 44px; }
 .moods .mood-img { background: #f5eee0; }
+.moods .mood-name { color: #f5eee0; }
+.moods .mood:hover .mood-name { color: #f6b04a; }
+.moods .mood-sub { color: rgba(245, 238, 224, 0.72); }
+.story { --band: var(--sage); margin-top: 80px; margin-bottom: 70px; padding: 80px 20px; }
+.story-inner { background: transparent; padding: 0 20px; }
+.story h2, .story p, .story .verse { color: var(--ink); }
+.story .eyebrow, .story .verse cite { color: var(--amber); }
+.story .verse { border-top-color: rgba(44, 40, 37, 0.25); }
 .intro { padding-bottom: 8px; }
-/* the footer image sits right under the dark story band: keep a little space */
-.story + .footer, main + .footer { margin-top: 0; }
-@media (max-width: 700px) { .promise { margin-top: 36px; } .moods { padding: 56px 0 64px; } .story { margin-top: 60px; padding: 60px 0; } }
+@media (max-width: 700px) {
+  .promise { margin-top: 36px; padding: 22px 18px; }
+  .moods { margin-top: 40px; padding: 48px 20px 56px; }
+  .mood-grid { gap: 34px; max-width: 280px; }
+  .story { margin-top: 50px; margin-bottom: 40px; padding: 52px 8px; }
+}
