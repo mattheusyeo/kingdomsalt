@@ -34,6 +34,7 @@ Everything about products and shipping is in **`data/products.json`**, and the G
 - `images` (optional) is the list of photos on the product page, as `{ "src", "alt" }`. With five photos they form a collage (one large photo and four close-ups); with fewer they sit in a row under the main photo. Click a photo to enlarge it.
 - `options` (optional) adds a choice the customer must make, such as a scent: `{ "label": "Scent", "values": [ ... ] }`. Each value has an `id`, `name`, a larger `image` (shown as the main photo when chosen) and a small square `thumb` (shown on its card), and may have its own `price` and `aliexpress.skuId` (the AliExpress variant to order). The cart, Stripe checkout and saved orders all keep the chosen option. Option cards and the photo area use the cream colour `--cream` (`#f5eee0`) in `css/styles.css`; scent photos had their white backgrounds recoloured to the same cream.
 - `banner` (optional) puts the product in the **home page banner slideshow**: `{ "order": 1, "wide": "...-1200.jpg", "wide2x": "...-2400.jpg", "wide4k": "...-4k.jpg", "square": "...", "alt": "..." }`. `order` sets the slide order. `wide`, `wide2x` and `wide4k` are the same wide photo in the banner's shape (about 2.1 : 1) at 1200, 2400 and 3840 pixels wide, and the browser picks the smallest one that is sharp enough for the screen. `square` is a lighter 1000px square photo that phones use. Products without a `banner` are not shown in it.
+- `pairsWith` (optional) is a list of product ids shown as "Goes well with" on that product's page.
 - `description` (optional) is a list of paragraphs, and `details` (optional) a list of bullet points, shown on the product page.
 - `labels` is the small heading shown beside each tab's products. Its keys are also the list of valid tabs.
 - `shipping` is the delivery cost (`amount`, in cents, `0` = free) and the delivery time shown to the customer (`minBusinessDays` / `maxBusinessDays`).
@@ -87,6 +88,7 @@ css/styles.css                                      all styling
 js/menu.js                                          menu dropdown + page fade
 js/gallery.js                                       fills the Gallery page from products.json
 js/hero.js                                          home page banner slideshow
+js/reveal.js                                         fade-up animation for home page sections
 js/shelves.js                                       home page product rows ("Best of Holders", ...)
 js/suggest.js                                       Gallery "You may be interested in" row (random products)
 js/product.js                                       product page: collage, description, add to cart

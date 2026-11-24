@@ -30,7 +30,7 @@
       var slides = [], current = 0, timer = null, hovering = false;
       var total = products.length + 1;                                   // the logo slide is always first
 
-      var brand = el('div', 'hero-slide');
+      var brand = el('div', 'hero-slide is-brand');
       brand.setAttribute('role', 'group');
       brand.setAttribute('aria-roledescription', 'slide');
       brand.setAttribute('aria-label', '1 of ' + total + ': Kingdomlight');

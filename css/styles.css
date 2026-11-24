@@ -818,3 +818,81 @@ button.contact-value.is-copied { text-decoration: none; }
 /* Second section on a tab (for example Accessories under Holders): no tall placeholder space */
 .g-grid.is-short { min-height: 0; }
 .g-extra { padding-top: 10px; }
+
+/* ---------- Home page: headline, promises, moods, story ---------- */
+:root { --amber: #b8561a; --ink: #2c2825; }
+.eyebrow { font-size: 13px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--amber); }
+.intro { max-width: 1500px; margin: 0 auto; padding: 70px 0 20px; display: flex; flex-direction: column; align-items: center; gap: 18px; text-align: center; }
+.intro h1 { max-width: 16ch; font-family: "Cinzel", serif; font-weight: 600; font-size: clamp(34px, 6vw, 64px); line-height: 1.08; letter-spacing: 0.01em; color: var(--headline); text-wrap: balance; }
+.intro-text { max-width: 54ch; font-size: 19px; line-height: 1.55; color: var(--body); }
+.intro .button { margin-top: 6px; }
+
+.promise { list-style: none; max-width: 1500px; margin: 40px auto 0; padding: 22px 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; border-top: 1px solid var(--divider); border-bottom: 1px solid var(--divider); }
+.promise li { display: flex; flex-direction: column; align-items: center; gap: 2px; text-align: center; }
+.promise strong { font-size: 16px; letter-spacing: 0.02em; text-transform: uppercase; color: var(--headline); }
+.promise span { font-size: 15px; color: var(--caption); }
+
+.moods { max-width: 1500px; margin: 0 auto; padding: 90px 0 0; }
+.moods h2, .story h2 { font-family: "Cinzel", serif; font-weight: 600; font-size: clamp(28px, 4vw, 42px); letter-spacing: 0.01em; color: var(--headline); }
+.moods h2 { margin-bottom: 34px; text-align: center; }
+.mood-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.mood { display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; color: var(--headline); }
+.mood-img { display: block; width: 100%; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 999px 999px var(--radius) var(--radius); background: var(--cream); }
+.mood-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s ease; }
+.mood:hover .mood-img img, .mood:focus-visible .mood-img img { transform: scale(1.05); }
+.mood-name { margin-top: 16px; font-family: "Cinzel", serif; font-weight: 600; font-size: 24px; letter-spacing: 0.02em; }
+.mood-sub { font-size: 16px; color: var(--caption); }
+.mood:hover .mood-name { color: var(--amber); }
+
+.story { max-width: 1500px; margin: 0 auto 120px; }
+.story-inner { max-width: 760px; margin: 0 auto; padding: 56px 40px; display: flex; flex-direction: column; gap: 16px; text-align: center; background: var(--cream); border-radius: var(--radius); }
+.story p { font-size: 18px; line-height: 1.65; color: var(--body); }
+.verse { margin: 10px 0 0; padding-top: 18px; border-top: 1px solid rgba(44, 40, 37, 0.25); font-family: "Cinzel", serif; font-size: 22px; line-height: 1.4; color: var(--headline); }
+.verse cite { display: block; margin-top: 6px; font-family: "Outfit", sans-serif; font-style: normal; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--amber); }
+
+/* amber under the home product headings */
+.shelf-head h2 { position: relative; padding-bottom: 12px; }
+.shelf-head h2::after { content: ""; position: absolute; left: 0; bottom: 0; width: 44px; height: 3px; border-radius: 2px; background: var(--amber); }
+
+/* product cards: a slow zoom on hover */
+.card-img img { transition: transform 0.6s ease; }
+.card:hover .card-img img { transform: scale(1.05); }
+
+/* a soft candle glow breathing behind the flame on the logo slide */
+.hero-slide.is-brand::after {
+  content: ""; position: absolute; left: 50%; top: 27%; width: min(520px, 70%); aspect-ratio: 1; transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(246, 176, 74, 0.34) 0%, rgba(246, 176, 74, 0.12) 38%, rgba(246, 176, 74, 0) 68%);
+  pointer-events: none; mix-blend-mode: screen; animation: kl-glow 3.6s ease-in-out infinite;
+}
+@keyframes kl-glow { 0%, 100% { opacity: 0.55; transform: translate(-50%, -50%) scale(0.96); } 40% { opacity: 1; transform: translate(-50%, -50%) scale(1.04); } 70% { opacity: 0.75; } }
+
+/* fade up as sections scroll into view (only when JavaScript is running) */
+.js-reveal .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.js-reveal .reveal.is-in { opacity: 1; transform: none; }
+
+/* product page: goes well with */
+.pairs { max-width: 1500px; margin: 0 auto; padding: 70px 0 20px; }
+.pairs h2 { margin-bottom: 26px; font-family: "Cinzel", serif; font-weight: 600; font-size: 28px; color: var(--headline); }
+.pairs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 260px)); gap: 24px; }
+.pairs .card { flex: none; }
+
+@media (max-width: 1100px) { .intro { padding-top: 50px; } .moods { padding-top: 70px; } .mood-grid { gap: 16px; } .mood-name { font-size: 20px; } }
+@media (max-width: 700px) {
+  .intro { padding: 36px 0 8px; } .intro-text { font-size: 17px; }
+  .promise { grid-template-columns: 1fr; gap: 14px; margin-top: 28px; }
+  .mood-grid { grid-template-columns: 1fr; max-width: 360px; margin: 0 auto; gap: 34px; }
+  .story-inner { padding: 38px 22px; } .story { margin-bottom: 70px; }
+  .verse { font-size: 19px; }
+  .pairs-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-slide.is-brand::after { animation: none; opacity: 0.8; }
+  .mood-img img, .card-img img { transition: none; }
+}
+
+.cart-empty .button + .button { margin-left: 10px; }
+.thanks-detail { max-width: 46ch; color: var(--caption); font-size: 16px; line-height: 1.55; }
+.thanks-verse { font-family: "Cinzel", serif; font-size: 20px; color: var(--amber); }
+
+.intro .button { width: auto; align-self: center; padding-left: 34px; padding-right: 34px; }
+.cart-empty .button { width: auto; }

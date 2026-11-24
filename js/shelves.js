@@ -8,7 +8,8 @@
   var CATEGORIES = [
     { id: 'lifestyle', name: 'Holders' },
     { id: 'stationery', name: 'Accessories' },
-    { id: 'accessories', name: 'Candles' }
+    { id: 'accessories', name: 'Candles' },
+    { id: 'gifts', name: 'Gifts under $35', title: 'Gifts under $35', href: 'gallery.html?category=accessories', pick: function (p) { return p.price <= 3500; } }
   ];
   var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var chevronRight = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>';
@@ -45,9 +46,9 @@
     sec.setAttribute('aria-labelledby', headId);
 
     var head = el('div', 'shelf-head');
-    var h2 = el('h2', null, 'Best of ' + cat.name); h2.id = headId;
+    var h2 = el('h2', null, cat.title || ('Best of ' + cat.name)); h2.id = headId;
     var all = el('a', 'shelf-all');
-    all.href = 'gallery.html?category=' + cat.id;
+    all.href = cat.href || ('gallery.html?category=' + cat.id);
     all.appendChild(document.createTextNode('Shop All '));
     var btn = el('span', 'shelf-all-btn'); btn.innerHTML = chevronRight;
     all.appendChild(btn);
@@ -108,7 +109,7 @@
       return;
     }
     CATEGORIES.forEach(function (cat) {
-      var items = catalog.products.filter(function (p) { return (p.categories || []).indexOf(cat.id) !== -1; });
+      var items = catalog.products.filter(function (p) { return cat.pick ? cat.pick(p) : (p.categories || []).indexOf(cat.id) !== -1; });
       if (!items.length) return;
       var sec = buildShelf(cat, items);
       root.appendChild(sec);

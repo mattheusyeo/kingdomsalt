@@ -279,3 +279,11 @@ test('webhook order keeps the chosen scent and flags a missing AliExpress varian
   assert.equal(saved.fulfilment.supplierLines[0].option, v.id);
   assert.match(saved.fulfilment.reason, new RegExp(`${candle.id}/${v.id}`));
 });
+
+test('"goes well with" links on products point to real, different products', () => {
+  const ids = new Set(liveCatalog.products.map((p) => p.id));
+  for (const p of liveCatalog.products) for (const q of p.pairsWith || []) {
+    assert.ok(ids.has(q), `${p.id} pairs with unknown product ${q}`);
+    assert.notEqual(q, p.id, `${p.id} pairs with itself`);
+  }
+});

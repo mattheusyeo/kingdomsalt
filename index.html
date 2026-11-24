@@ -51,9 +51,53 @@
   </header>
 
   <main>
+    <section class="intro reveal" aria-labelledby="intro-title">
+      <p class="eyebrow">Candles &middot; Holders &middot; Accessories</p>
+      <h1 id="intro-title">Light for every corner of home</h1>
+      <p class="intro-text">Scented candles, salt holders and little extras to make a room feel calm, warm and a bit more yours.</p>
+      <a class="button button-lg" href="gallery.html?category=accessories">Shop candles</a>
+    </section>
+
+    <ul class="promise reveal" aria-label="Our promises">
+      <li><strong>Free shipping</strong><span>Across Australia</span></li>
+      <li><strong>Secure payment</strong><span>Powered by Stripe</span></li>
+      <li><strong>Clear delivery</strong><span>Estimated 10&ndash;25 business days</span></li>
+    </ul>
+
+    <section class="moods reveal" aria-labelledby="moods-title">
+      <h2 id="moods-title">Shop by mood</h2>
+      <div class="mood-grid">
+        <a class="mood" href="gallery.html?category=accessories">
+          <span class="mood-img"><img src="assets/mood-cosy.jpg" alt="A lit amber glass jar candle on a table" loading="lazy" decoding="async" width="600" height="750"></span>
+          <span class="mood-name">Cosy nights</span>
+          <span class="mood-sub">Scented candles for the evening</span>
+        </a>
+        <a class="mood" href="product.html?id=soy-candle-tin">
+          <span class="mood-img"><img src="assets/mood-gift.jpg" alt="Patterned candle tins with a matching gift box" loading="lazy" decoding="async" width="600" height="750"></span>
+          <span class="mood-name">Gifts</span>
+          <span class="mood-sub">In their own gift boxes</span>
+        </a>
+        <a class="mood" href="gallery.html?category=lifestyle">
+          <span class="mood-img"><img src="assets/mood-calm.jpg" alt="A white textured tray with sage, palo santo and incense" loading="lazy" decoding="async" width="600" height="750"></span>
+          <span class="mood-name">Calm corners</span>
+          <span class="mood-sub">Holders and trays for quiet moments</span>
+        </a>
+      </div>
+    </section>
+
     <div class="shelves" id="shelves" aria-live="polite">
       <!-- js/shelves.js fills in one row per category from data/products.json -->
     </div>
+
+    <section class="story reveal" aria-labelledby="story-title">
+      <div class="story-inner">
+        <p class="eyebrow">Our story</p>
+        <h2 id="story-title">Why Kingdomlight?</h2>
+        <p>Salt to bring out the best in things. Light to chase back the dark. The name comes from words many of us grew up with: <em>&ldquo;You are the salt of the earth&hellip; You are the light of the world.&rdquo;</em></p>
+        <p>We make a home a little warmer with candles and the small things that go with them, and we hope each one helps you make your own space a place of peace.</p>
+        <blockquote class="verse">&ldquo;Let your light shine before others.&rdquo;<cite>Matthew 5:16</cite></blockquote>
+      </div>
+    </section>
   </main>
 
   <footer class="footer">
@@ -79,6 +123,7 @@
   <script src="js/cart.js"></script>
   <script src="js/hero.js"></script>
   <script src="js/shelves.js"></script>
+  <script src="js/reveal.js"></script>
   <script src="js/menu.js"></script>
 </body>
 </html>

@@ -253,6 +253,29 @@
 
     root.appendChild(collage);
     root.appendChild(info);
+
+    /* ----- goes well with ----- */
+    var old = document.getElementById('pairs');
+    if (old) old.remove();
+    var partners = (product.pairsWith || []).map(function (pid) {
+      return catalog.products.filter(function (q) { return q.id === pid; })[0];
+    }).filter(Boolean);
+    if (partners.length) {
+      var wrap = el('section', 'pairs'); wrap.id = 'pairs'; wrap.setAttribute('aria-labelledby', 'pairs-title');
+      var ph = el('h2', null, 'Goes well with'); ph.id = 'pairs-title';
+      var grid2 = el('div', 'pairs-grid');
+      partners.forEach(function (q) {
+        var card = el('a', 'card'); card.href = 'product.html?id=' + encodeURIComponent(q.id);
+        var frame = el('span', 'card-img'); var im = el('img');
+        im.alt = q.alt || q.name; im.decoding = 'async'; im.loading = 'lazy'; im.src = q.image;
+        frame.appendChild(im); card.appendChild(frame);
+        card.appendChild(el('span', 'card-name', q.name));
+        card.appendChild(el('span', 'card-price', money(q.price)));
+        grid2.appendChild(card);
+      });
+      wrap.appendChild(ph); wrap.appendChild(grid2);
+      document.getElementById('product-wrap').appendChild(wrap);
+    }
   }
 
   window.khLoadCatalog()
