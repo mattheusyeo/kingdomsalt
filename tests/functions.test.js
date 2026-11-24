@@ -139,10 +139,12 @@ test('checkout says so when Stripe is not configured, and hides Stripe errors fr
   const res = await checkout({ request: post('https://shop.example/api/checkout', { items: [{ id: 'acrylic-pen-holder', qty: 1 }] }), env: env({ STRIPE_SECRET_KEY: undefined }) });
   assert.equal(res.status, 503);
 
-  fakeStripe(() => ({ status: 401, data: { error: { message: 'Invalid API Key provided: sk_test_123' } } }));
+  fakeStripe(() => ({ status: 401, data: { error: { type: 'invalid_request_error', code: 'api_key_expired', message: 'Invalid API Key provided: sk_test_123' } } }));
   const bad = await checkout({ request: post('https://shop.example/api/checkout', { items: [{ id: 'acrylic-pen-holder', qty: 1 }] }), env: env() });
   assert.equal(bad.status, 502);
-  assert.ok(!(await bad.text()).includes('sk_test'), 'must not leak Stripe error details');
+  const badText = await bad.text();
+  assert.ok(!badText.includes('sk_test') && !badText.includes('Invalid API Key'), 'must not leak Stripe error details');
+  assert.equal(JSON.parse(badText).reason, '401:invalid_request_error:api_key_expired', 'only the short labels are returned');
 });
 
 // ---------- webhook ----------

@@ -44,6 +44,8 @@ export async function stripeRequest(env, method, path, params) {
   if (!res.ok) {
     const err = new Error((data.error && data.error.message) || `Stripe error ${res.status}`);
     err.status = res.status;
+    err.type = (data.error && data.error.type) || null;   // short labels such as authentication_error: safe to show, unlike the full message
+    err.code = (data.error && data.error.code) || null;
     throw err;
   }
   return data;
