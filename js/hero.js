@@ -33,7 +33,7 @@
       var brand = el('div', 'hero-slide');
       brand.setAttribute('role', 'group');
       brand.setAttribute('aria-roledescription', 'slide');
-      brand.setAttribute('aria-label', '1 of ' + total + ': Kingdomsalt');
+      brand.setAttribute('aria-label', '1 of ' + total + ': Kingdomlight');
       var brandPic = el('picture');
       var brandSrc = el('source');
       brandSrc.media = '(max-width: 700px)';
@@ -43,7 +43,7 @@
       brandImg.src = 'assets/banner-logo-1200.jpg';
       brandImg.srcset = 'assets/banner-logo-1200.jpg 1200w, assets/banner-logo-2400.jpg 2400w';
       brandImg.sizes = '(min-width: 1880px) 1720px, calc(100vw - 160px)';
-      brandImg.alt = 'Kingdomsalt: candles, holders and gifts';
+      brandImg.alt = 'Kingdomlight: candles, holders and gifts';
       brandImg.decoding = 'async';
       brandPic.appendChild(brandImg);
       brand.appendChild(brandPic);

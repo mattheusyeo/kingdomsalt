@@ -23,7 +23,7 @@
     var category = new URLSearchParams(window.location.search).get('category');
     if (names[category]) {
       title.textContent = names[category];
-      document.title = names[category] + ' – Kingdomsalt';
+      document.title = names[category] + ' – Kingdomlight';
       nav.querySelectorAll('.nav-items a').forEach(function (a) {
         if (a.getAttribute('href').indexOf('category=' + category) !== -1) a.classList.add('active');
       });

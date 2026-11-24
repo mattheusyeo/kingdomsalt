@@ -40,7 +40,7 @@
     root.textContent = '';
 
     if (!product) {
-      document.title = 'Product not found – Kingdomsalt';
+      document.title = 'Product not found – Kingdomlight';
       var missing = el('div', 'cart-empty');
       missing.appendChild(el('p', null, 'We could not find that product.'));
       var back = el('a', 'button', 'Keep shopping');
@@ -51,7 +51,7 @@
       return;
     }
 
-    document.title = product.name + ' – Kingdomsalt';
+    document.title = product.name + ' – Kingdomlight';
     var cat = (product.categories || [])[0];
     var backLink = document.getElementById('product-back');
     if (cat && CATEGORY[cat]) {
