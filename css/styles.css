@@ -238,8 +238,8 @@ ol { list-style: none; }
 .g-item { display: flex; flex-direction: column; gap: 15px; }
 .g-item { min-width: 0; }
 .g-info {
-  /* a long name wraps onto a second line and the price drops under it, instead of running into the next card */
-  display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; min-width: 0;
+  /* the price always sits under the name; a long name wraps onto more lines without running into the next card */
+  display: flex; flex-direction: column; align-items: flex-start; gap: 4px; min-width: 0;
   font-weight: 700; line-height: 1.4;
 }
 .g-name { min-width: 0; font-size: 18px; text-transform: uppercase; color: var(--body); overflow-wrap: break-word; }
