@@ -867,15 +867,16 @@ button.contact-value.is-copied { text-decoration: none; }
   .story-banner-in { padding: 40px 16px; justify-content: flex-start; }
 }
 
-/* ---------- Footer: a shorter, contained box (clay stays at the sides), links bar tucked into its bottom ---------- */
-.footer { margin-bottom: 40px; }
-.footer-card { padding-top: 230px; }
+/* ---------- Footer: shorter, edge to edge like the banners, links bar closing it off ---------- */
+.footer { margin: 0 -40px; }
+.footer-card { max-width: none; padding: 230px 40px 20px; border-radius: 0; }
+.footer-links { max-width: none; border-radius: 0; }
 .footer-img { object-position: 70% 20%; }
 .monogram { font-size: 88px; }
-.footer-links { border-radius: 0 0 var(--radius) var(--radius); }
+.footer-row { max-width: 1500px; margin: 0 auto; }
 @media (max-width: 1100px) { .footer-card { padding-top: 190px; } }
 @media (max-width: 600px) {
-  .footer { margin-bottom: 24px; }
-  .footer-card { padding-top: 150px; }
+  .footer { margin: 0 -16px; }
+  .footer-card { padding: 150px 16px 20px; }
   .monogram { font-size: 60px; }
 }
