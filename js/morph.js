@@ -18,11 +18,21 @@
   box.appendChild(img);
   document.documentElement.appendChild(box);
 
+  // Until the flying photo arrives, the big photo's frame is a blank ivory box; the real photo is revealed as the copy lands.
+  var css = document.createElement('style');
+  css.textContent = 'html.morphing .collage-track{background:#faf7f1!important}' +
+    'html.morphing .collage-item img{opacity:0!important;transition:none!important}' +
+    'html.morph-reveal .collage-item img{transition:opacity .6s ease!important}';
+  document.head.appendChild(css);
+  document.documentElement.classList.add('morphing');
+
   var finished = false;
   function end() {
     if (finished) return; finished = true;
-    box.style.transition = 'opacity .25s ease'; box.style.opacity = '0';
-    setTimeout(function () { box.remove(); }, 300);
+    document.documentElement.classList.add('morph-reveal');
+    document.documentElement.classList.remove('morphing');
+    box.style.transition = 'opacity .6s ease'; box.style.opacity = '0';
+    setTimeout(function () { box.remove(); document.documentElement.classList.remove('morph-reveal'); css.remove(); }, 700);
   }
   function land(target) {
     if (finished) return;
