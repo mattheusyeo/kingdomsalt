@@ -947,3 +947,14 @@ button.contact-value.is-copied { text-decoration: none; }
 @media (prefers-reduced-motion: reduce) { .nav-items a.active { animation: none; } .mark-flame { animation: none; } }
 @media (max-width: 430px) { .announce { font-size: 10.8px; letter-spacing: 0; gap: 5px; } }
 @media (max-width: 350px) { .announce { font-size: 11.5px; letter-spacing: 0.02em; } }
+
+/* Page banner (Candles, Holders, Accessories, Contact): wide photo on the left, title centred on the right, edge to edge */
+.page-header.page-banner { max-width: none; margin: calc(var(--announce) + var(--nav-top) + var(--nav-row) - var(--nav-extra)) -40px 56px; padding: 0; display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); min-height: clamp(260px, 30vw, 440px); }
+.pb-img { overflow: hidden; background: var(--cream); }
+.pb-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.page-banner .pb-title { align-self: center; justify-self: center; text-align: center; padding: 0 24px; margin: 0; text-transform: none; letter-spacing: -0.01em; font-weight: 600; font-size: clamp(26px, 3vw, 40px); }
+@media (max-width: 700px) {
+  .page-header.page-banner { margin: calc(var(--announce) + var(--nav-top) + var(--nav-row) - var(--nav-extra)) -16px 28px; grid-template-columns: 1fr; min-height: 0; }
+  .pb-img { height: 200px; }
+  .page-banner .pb-title { padding: 22px 16px 0; font-size: 30px; }
+}

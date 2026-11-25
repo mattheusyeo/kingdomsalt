@@ -22,6 +22,9 @@
   if (title) {
     var names = { lifestyle: 'Holders', stationery: 'Accessories', accessories: 'Candles' };
     var category = new URLSearchParams(window.location.search).get('category');
+    var pics = { lifestyle: 'assets/banner-salt-holder-2400.jpg', stationery: 'assets/wick-trimmer-set.jpg', accessories: 'assets/banner-soy-candle-2400.jpg' };
+    var pbImg = document.querySelector('.pb-img img');
+    if (pbImg && pics[category]) pbImg.src = pics[category];
     if (names[category]) {
       title.textContent = names[category];
       document.title = names[category] + ' – Kingdomlight';
