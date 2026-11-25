@@ -923,10 +923,10 @@ button.contact-value.is-copied { text-decoration: none; }
 .announce {
   margin: 0 -40px; height: var(--announce);
   display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: nowrap; overflow: hidden;
-  background: #f5eee0; color: var(--night);
+  background: var(--night); color: #f5eee0;
   font-size: 13px; letter-spacing: 0.04em; white-space: nowrap;
 }
-.announce i { font-style: normal; color: #b8561a; }
+.announce i { font-style: normal; color: #f6b04a; }
 .logo { display: inline-flex; align-items: center; gap: 0.5em; }
 .logo-mark { width: 0.95em; height: auto; flex: none; color: var(--ink); overflow: visible; }
 .mark-flame { filter: drop-shadow(0 0 3px rgba(224, 138, 44, 0.65)); animation: mark-glow 3.4s ease-in-out infinite; transform-origin: 50% 90%; }
@@ -947,3 +947,7 @@ button.contact-value.is-copied { text-decoration: none; }
 @media (prefers-reduced-motion: reduce) { .nav-items a.active { animation: none; } .mark-flame { animation: none; } }
 @media (max-width: 430px) { .announce { font-size: 10.8px; letter-spacing: 0; gap: 5px; } }
 @media (max-width: 350px) { .announce { font-size: 11.5px; letter-spacing: 0.02em; } }
+
+/* Page heading (Holders, Contact...): a full-width cream band */
+.page-header { max-width: none; margin: calc(var(--announce) + var(--nav-top) + var(--nav-row) - var(--nav-extra)) -40px 40px; padding: 64px max(40px, calc((100% - 1500px) / 2)) 48px; background: #f5eee0; }
+@media (max-width: 600px) { .page-header { margin: calc(var(--announce) + var(--nav-top) + var(--nav-row) - var(--nav-extra)) -16px 28px; padding: 44px 16px 32px; } }
