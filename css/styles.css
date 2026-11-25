@@ -950,6 +950,7 @@ button.contact-value.is-copied { text-decoration: none; }
 /* Clicked tab: the words catch fire */
 .nav-items a.burning { color: #d9531e; text-shadow: 0 0 6px rgba(246, 176, 74, 0.95), 0 0 14px rgba(217, 121, 43, 0.8); animation: burn-text 0.14s ease-in-out infinite alternate; transition: color 0.3s ease; }
 @keyframes burn-text { from { text-shadow: 0 0 5px rgba(246, 176, 74, 0.9), 0 0 12px rgba(217, 121, 43, 0.7); } to { text-shadow: 0 0 9px rgba(255, 210, 122, 1), 0 0 20px rgba(217, 83, 30, 0.85); } }
+.nav-items a.active { color: #d9531e; text-shadow: 0 0 6px rgba(246, 176, 74, 0.95), 0 0 14px rgba(217, 121, 43, 0.8); animation: burn-text 1.4s ease-in-out infinite alternate; }
 .nav-items a.burning::after { animation: none; transform: scale(1.3); }
 .nav-items a:not(.active):hover::after { opacity: 0.55; }
 @media (max-width: 600px) {
@@ -958,6 +959,6 @@ button.contact-value.is-copied { text-decoration: none; }
   .nav-items a { padding: 8px 2px 14px; }
 }
 @media (max-width: 350px) { .announce i, .announce span + i + span { display: none; } .announce { font-size: 11.5px; } .nav-items { font-size: 11px; letter-spacing: 0.05em; } }
-@media (prefers-reduced-motion: reduce) { .mark-flame { animation: none; } .nav-items a::after { transition: none; animation: none !important; } }
+@media (prefers-reduced-motion: reduce) { .nav-items a.active { animation: none; } .mark-flame { animation: none; } .nav-items a::after { transition: none; animation: none !important; } }
 @media (max-width: 430px) { .announce { font-size: 10.8px; letter-spacing: 0; gap: 5px; } }
 @media (max-width: 350px) { .announce { font-size: 11.5px; letter-spacing: 0.02em; } }
