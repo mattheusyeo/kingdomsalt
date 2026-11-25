@@ -46,9 +46,9 @@
     var to = { transform: 'translate(0,0) scale(1)', clipPath: 'inset(0px 0px round ' + tr + 'px)' };
     box.style.transform = from.transform; box.style.clipPath = from.clipPath;
     box.style.overflow = 'visible';
-    var anim = box.animate([from, to], { duration: 850, easing: 'cubic-bezier(.65,0,.2,1)', fill: 'forwards' });
+    var anim = box.animate([from, to], { duration: 1200, easing: 'cubic-bezier(.65,0,.2,1)', fill: 'forwards' });
     anim.onfinish = end;
-    setTimeout(end, 1100);
+    setTimeout(end, 1450);
   }
   // wait for the big photo to be built by product.js, then fly there
   var seen = false;
