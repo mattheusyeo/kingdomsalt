@@ -29,7 +29,7 @@
     window.scrollTo(0, 0);
     var r = target.getBoundingClientRect();
     if (!r.width) { end(); return; }
-    var tr = parseFloat(getComputedStyle(target.parentNode).borderRadius) || 0;
+    var tr = parseFloat(getComputedStyle(target.closest('.collage-track') || target.parentNode).borderRadius) || 0;
     var sr = parseFloat(s.r) || 0;
     // Smooth version: the copy is laid out once at its final size, then only transform and clip-path
     // change (both run on the graphics card), so it doesn't stutter while the page is still loading.
