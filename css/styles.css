@@ -931,14 +931,33 @@ button.contact-value.is-copied { text-decoration: none; }
 .logo-mark { width: 0.95em; height: auto; flex: none; color: var(--ink); overflow: visible; }
 .mark-flame { filter: drop-shadow(0 0 3px rgba(224, 138, 44, 0.65)); animation: mark-glow 3.4s ease-in-out infinite; transform-origin: 50% 90%; }
 @keyframes mark-glow { 0%, 100% { opacity: 0.85; } 45% { opacity: 1; filter: drop-shadow(0 0 6px rgba(246, 176, 74, 0.95)); } }
+:root { --flame-bg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 30'><defs><linearGradient id='o' x1='0' y1='1' x2='0' y2='0'><stop offset='0' stop-color='%23d9531e'/><stop offset='.6' stop-color='%23f6a13a'/><stop offset='1' stop-color='%23ffd27a'/></linearGradient><linearGradient id='m' x1='0' y1='1' x2='0' y2='0'><stop offset='0' stop-color='%23f6a13a'/><stop offset='1' stop-color='%23fff0b8'/></linearGradient></defs><path d='M10 0C11 8 19 12 19 20c0 6-4 10-9 10S1 26 1 20c0-4 2-6 4-9 0 3 1 4 2.5 4C6 9 8 4 10 0Z' fill='url(%23o)'/><path d='M10 11c1 5 6 7 6 12 0 4-2.5 6-6 6s-6-2-6-6c0-3 2-4 3-6 0 2 .8 3 1.8 3C8 17 9 14 10 11Z' fill='url(%23m)'/><path d='M10 20c.8 3 3 4 3 6.5 0 2-1.3 3-3 3s-3-1-3-3c0-2.5 2.2-3.5 3-6.5Z' fill='%23fffaf0'/></svg>"); }
 .nav-items { font-size: 14px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; }
 .nav-items a { position: relative; padding: 8px 4px 16px; }
 .nav-items a:hover, .nav-items a.active { text-decoration: none; }
 .nav-items a::after {
-  content: ""; position: absolute; left: 50%; bottom: 6px; width: 7px; height: 10px; transform: translateX(-50%) scale(0);
-  background: #d9792b; border-radius: 50% 50% 50% 50% / 68% 68% 32% 32%; transition: transform 0.25s ease;
+  content: ""; position: absolute; left: 50%; bottom: 3px; width: 13px; height: 19px; margin-left: -6.5px; transform: scale(0); transform-origin: 50% 100%;
+  background: var(--flame-bg) center / 100% 100% no-repeat; filter: drop-shadow(0 0 4px rgba(246, 176, 74, 0.8));
+  transition: transform 0.25s ease;
 }
-.nav-items a.active::after, .nav-items a:hover::after { transform: translateX(-50%) scale(1); }
+.nav-items a.active::after, .nav-items a:hover::after { transform: scale(1); animation: tab-flicker 0.9s ease-in-out infinite alternate; }
+@keyframes tab-flicker {
+  0%   { transform: scale(1, 1) skewX(0deg); }
+  30%  { transform: scale(0.94, 1.1) skewX(-4deg); }
+  65%  { transform: scale(1.04, 0.95) skewX(3deg); }
+  100% { transform: scale(0.97, 1.07) skewX(-2deg); }
+}
+/* Clicked tab: the words catch fire */
+.nav-items a.burning { color: #d9531e; text-shadow: 0 0 6px rgba(246, 176, 74, 0.95), 0 0 14px rgba(217, 121, 43, 0.8); animation: burn-text 0.14s ease-in-out infinite alternate; transition: color 0.3s ease; }
+@keyframes burn-text { from { text-shadow: 0 0 5px rgba(246, 176, 74, 0.9), 0 0 12px rgba(217, 121, 43, 0.7); } to { text-shadow: 0 0 9px rgba(255, 210, 122, 1), 0 0 20px rgba(217, 83, 30, 0.85); } }
+.nav-items a.burning::after { animation: none; transform: scale(1.3); }
+.fire { position: absolute; inset: 0; pointer-events: none; }
+.tongue { position: absolute; transform: translateX(-50%) scale(0); transform-origin: 50% 100%; background-size: 100% 100%; background-repeat: no-repeat; opacity: 0;
+  filter: drop-shadow(0 0 4px rgba(246, 176, 74, 0.85)); animation: tongue-rise 0.7s ease-out forwards, tongue-flicker 0.15s ease-in-out infinite alternate; }
+@keyframes tongue-rise { 0% { transform: translateX(-50%) translateY(6px) scale(0.1); opacity: 0; } 25% { opacity: 1; } 60% { transform: translateX(-50%) translateY(-4px) scale(1); opacity: 1; } 100% { transform: translateX(-50%) translateY(-14px) scale(0.85); opacity: 0.95; } }
+@keyframes tongue-flicker { from { filter: drop-shadow(0 0 3px rgba(246, 176, 74, 0.7)) brightness(1); } to { filter: drop-shadow(0 0 6px rgba(255, 210, 122, 1)) brightness(1.15); } }
+.ember { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: #ffb347; box-shadow: 0 0 5px 1px rgba(255, 150, 50, 0.9); opacity: 0; animation: ember-up 0.8s ease-out forwards; }
+@keyframes ember-up { 0% { transform: translate(0, 0); opacity: 0; } 15% { opacity: 1; } 100% { transform: translate(var(--dx), calc(var(--rise) * -1)); opacity: 0; } }
 .nav-items a:not(.active):hover::after { opacity: 0.55; }
 @media (max-width: 600px) {
   .announce { margin: 0 -16px; font-size: 11.5px; gap: 6px; letter-spacing: 0.02em; }
@@ -946,6 +965,6 @@ button.contact-value.is-copied { text-decoration: none; }
   .nav-items a { padding: 8px 2px 14px; }
 }
 @media (max-width: 350px) { .announce i, .announce span + i + span { display: none; } .announce { font-size: 11.5px; } .nav-items { font-size: 11px; letter-spacing: 0.05em; } }
-@media (prefers-reduced-motion: reduce) { .mark-flame { animation: none; } .nav-items a::after { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .mark-flame { animation: none; } .nav-items a::after { transition: none; animation: none !important; } }
 @media (max-width: 430px) { .announce { font-size: 10.8px; letter-spacing: 0; gap: 5px; } }
 @media (max-width: 350px) { .announce { font-size: 11.5px; letter-spacing: 0.02em; } }
