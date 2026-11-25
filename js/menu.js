@@ -51,39 +51,18 @@
     }
     document.documentElement.classList.add('is-leaving');
     var isTab = !!a.closest('.nav-items');
-    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (isTab && !reduce) {
-      if (document.querySelector('.flame-sweep')) return;            // a sweep is already running
-      flameSweep(a);
-      setTimeout(function () { window.location.href = a.href; }, SWEEP_MS + 40);
+    if (isTab && window.flameCover) {
+      var r = a.getBoundingClientRect();
+      window.flameCover(r.left + r.width / 2, r.bottom - 6, function () { window.location.href = a.href; });
     } else {
       setTimeout(function () { window.location.href = a.href; }, LEAVE_MS);
     }
   });
 
-  // A flame that starts under the clicked tab and runs across the whole page, leaving a glowing trail.
-  var SWEEP_MS = 700;
-  function flameSweep(tab) {
-    var r = tab.getBoundingClientRect();
-    var startX = r.left + r.width / 2;
-    var y = r.bottom - 12;
-    var box = document.createElement('div');
-    box.className = 'flame-sweep';
-    box.setAttribute('aria-hidden', 'true');
-    box.style.left = startX + 'px';
-    box.style.width = Math.max(40, window.innerWidth - startX) + 'px';
-    box.style.top = y + 'px';
-    box.innerHTML = '<span class="flame-trail"></span><span class="flame-head"><svg viewBox="0 0 24 34" width="24" height="34"><path d="M12 1C17 9 22 14 22 21c0 6.5-4.5 11-10 11S2 27.500 2 21C2 14 7 9 12 1Z" fill="#f6b04a"/><path d="M12 14c3 4 5 6.500 5 10 0 3-2.200 5.500-5 5.500S7 27 7 24c0-3.500 2-6 5-10Z" fill="#fff3d6"/></svg></span>';
-    document.body.appendChild(box);
-    // start on the next frame so the animation runs
-    requestAnimationFrame(function () { box.classList.add('go'); });
-  }
-
   // Coming back with the browser's Back button: show the page again.
   window.addEventListener('pageshow', function (e) {
     if (e.persisted) {
       document.documentElement.classList.remove('is-leaving');
-      var old = document.querySelector('.flame-sweep'); if (old) old.remove();
     }
   });
 })();
