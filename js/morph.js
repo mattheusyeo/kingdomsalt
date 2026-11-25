@@ -29,13 +29,26 @@
     window.scrollTo(0, 0);
     var r = target.getBoundingClientRect();
     if (!r.width) { end(); return; }
-    var tr = getComputedStyle(target.parentNode).borderRadius;
-    void box.offsetWidth;
-    box.style.transition = 'left .6s cubic-bezier(.6,0,.2,1),top .6s cubic-bezier(.6,0,.2,1),width .6s cubic-bezier(.6,0,.2,1),height .6s cubic-bezier(.6,0,.2,1),border-radius .6s ease';
+    var tr = parseFloat(getComputedStyle(target.parentNode).borderRadius) || 0;
+    var sr = parseFloat(s.r) || 0;
+    // Smooth version: the copy is laid out once at its final size, then only transform and clip-path
+    // change (both run on the graphics card), so it doesn't stutter while the page is still loading.
+    var k = Math.max(s.w / r.width, s.h / r.height);                 // scale so the copy covers the old spot
+    var cx = (r.width * k - s.w) / 2 / k, cy = (r.height * k - s.h) / 2 / k;   // extra to crop away, in final-size pixels
+    var dx = s.x + s.w / 2 - (r.left + r.width / 2), dy = s.y + s.h / 2 - (r.top + r.height / 2);
+    box.style.transition = 'none';
     box.style.left = r.left + 'px'; box.style.top = r.top + 'px';
     box.style.width = r.width + 'px'; box.style.height = r.height + 'px';
-    if (tr) box.style.borderRadius = tr;
-    setTimeout(end, 640);
+    box.style.borderRadius = '0';
+    box.style.transformOrigin = '50% 50%';
+    box.style.willChange = 'transform, clip-path';
+    var from = { transform: 'translate(' + dx + 'px,' + dy + 'px) scale(' + k + ')', clipPath: 'inset(' + cy + 'px ' + cx + 'px round ' + (sr / k) + 'px)' };
+    var to = { transform: 'translate(0,0) scale(1)', clipPath: 'inset(0px 0px round ' + tr + 'px)' };
+    box.style.transform = from.transform; box.style.clipPath = from.clipPath;
+    box.style.overflow = 'visible';
+    var anim = box.animate([from, to], { duration: 850, easing: 'cubic-bezier(.65,0,.2,1)', fill: 'forwards' });
+    anim.onfinish = end;
+    setTimeout(end, 1100);
   }
   // wait for the big photo to be built by product.js, then fly there
   var seen = false;
@@ -43,7 +56,8 @@
     var t = document.querySelector('.collage-item img');
     if (!t || seen) return;
     seen = true; mo.disconnect();
-    requestAnimationFrame(function () { requestAnimationFrame(function () { land(t); }); });
+    var go = function () { requestAnimationFrame(function () { requestAnimationFrame(function () { land(t); }); }); };
+    (t.decode ? t.decode().then(go, go) : go());
   }
   var mo = new MutationObserver(look);
   mo.observe(document.documentElement, { childList: true, subtree: true });
