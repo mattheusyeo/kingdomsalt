@@ -49,6 +49,23 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
+    // Clicking a product: remember where its photo is so the next page can morph it into the big photo
+    var reduceM = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduceM && /(^|\/)product(\.html)?$/.test(a.pathname)) {
+      var holder = a.closest('li, .card, .hero-slide, article') || a;
+      var pic = a.querySelector('img') || holder.querySelector('img');
+      if (pic && pic.currentSrc) {
+        var pr = pic.getBoundingClientRect(), frame = pic.parentNode;
+        if (pr.width && pr.bottom > 0 && pr.top < window.innerHeight) {
+          try {
+            sessionStorage.setItem('kl-morph', JSON.stringify({ src: pic.currentSrc, x: pr.left, y: pr.top, w: pr.width, h: pr.height,
+              r: getComputedStyle(frame).borderRadius || '0px', t: Date.now() }));
+          } catch (err) {}
+          window.location.href = a.href;
+          return;
+        }
+      }
+    }
     document.documentElement.classList.add('is-leaving');
     var isTab = !!a.closest('.nav-items');
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
